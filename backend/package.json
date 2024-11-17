@@ -1,0 +1,62 @@
+{
+  "name": "nav3studios.com",
+  "version": "1.0.0",
+  "description": "Web para el estudio musical Nav3 Studios",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "concurrently \"nodemon server.js\" \"npm start --prefix client\"",
+    "client": "npm start --prefix client",
+    "dev": "node --watch server.js",
+    "build": "react-scripts build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sicora-dev/nav3studios.com.git"
+  },
+  "keywords": [
+    "nav3",
+    "nav3studios",
+    "estudio",
+    "musical",
+    "estudio",
+    "musica",
+    "grabacion",
+    "canciones",
+    "cancion",
+    "grabar",
+    "mezcla"
+  ],
+  "author": "sicora-dev",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/sicora-dev/nav3studios.com/issues"
+  },
+  "homepage": "https://github.com/sicora-dev/nav3studios.com#readme",
+  "dependencies": {
+    "@paypal/checkout-server-sdk": "^1.0.3",
+    "argon2": "^0.41.1",
+    "body-parser": "^1.20.3",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "express-rate-limit": "^7.4.1",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "moment-timezone": "^0.5.46",
+    "node-cron": "^3.0.3",
+    "nodemailer": "^6.9.16",
+    "pg": "^8.13.1",
+    "stripe": "^17.3.1"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0",
+    "nodemon": "^2.0.7",
+    "standard": "^17.1.2"
+  },
+  "eslintConfig": {
+    "extends": "standard"
+  }
+}

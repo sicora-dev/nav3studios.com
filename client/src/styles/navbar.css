@@ -1,0 +1,22 @@
+@import url("https://fonts.googleapis.com/css2?family=Syne:wght@400;700&family=Inter:wght@400;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.font-title {
+  font-family: "Syne", sans-serif;
+}
+
+.icon-rotate {
+  transition:
+    transform 0.3s ease-in-out,
+    fill 0.3s ease-in-out;
+}
+
+button:hover .icon-rotate {
+  transform: rotate(180deg);
+  scale: 1.3;
+
+  /* Cambia el color a naranja */
+}
