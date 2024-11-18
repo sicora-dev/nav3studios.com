@@ -4,11 +4,14 @@
   "description": "Web para el estudio musical Nav3 Studios",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node functions/server.js",
     "server": "concurrently \"nodemon server.js\" \"npm start --prefix client\"",
     "client": "npm start --prefix client",
     "dev": "node --watch server.js",
-    "build": "react-scripts build"
+    "build": "netlify deploy --prod"
+  },
+  "engines": {
+    "node": "20.18.0"
   },
   "repository": {
     "type": "git",
@@ -49,6 +52,7 @@
     "node-cron": "^3.0.3",
     "nodemailer": "^6.9.16",
     "pg": "^8.13.1",
+    "serverless-http": "^3.2.0",
     "stripe": "^17.3.1"
   },
   "devDependencies": {

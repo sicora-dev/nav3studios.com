@@ -12,9 +12,10 @@ const authenticateToken = require("./middlewares/authenticateToken");
 const { initCronJobs } = require("./utils/cron-jobs");
 const authorizeRoles = require("./middlewares/authorizeRoles");
 const ROLES = require("./config/roles");
+const serverless = require("serverless-http");
 const app = express();
 const path = require("path");
-const port = process.env.NODE_PORT;
+const port = process.env.NODE_PORT || 5000;
 
 app.use(
   helmet({
@@ -31,8 +32,11 @@ app.use(
   })
 );
 
+app.use(helmet.frameguard({ action: "sameorigin" }));
+app.use(helmet.noSniff());
+
 const corsOptions = {
-  origin: process.env.FRONTEND_URL,
+  origin: 'https://nav3studios.netlify.app',
   credentials: true,
   methods: ["GET", "POST", "PUT", "PATCH"],
   allowedHeaders: ["Content-Type", "Authorization"],
@@ -42,7 +46,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "../../client/build")));
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutos
@@ -50,14 +54,14 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-app.use("/api/check-auth", authenticateToken, (req, res) => {
+app.use(`${process.env.BACKEND_URL}/check-auth`, authenticateToken, (req, res) => {
   res.status(200).json({ message: "You have access to this route." });
 });
 
-app.use("/api", userRoutes);
-app.use("/api", bookingRoutes);
-app.use("/api", serviceRoutes);
-app.use("/api", producerRoutes);
+app.use(`${process.env.BACKEND_URL}`, bookingRoutes);
+app.use(`${process.env.BACKEND_URL}`, serviceRoutes);
+app.use(`${process.env.BACKEND_URL}`, producerRoutes);
+app.use(`${process.env.BACKEND_URL}`, userRoutes);
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "build", "index.html"));
@@ -69,6 +73,8 @@ app.use((req, res, next) => {
 
 initCronJobs();
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+module.exports.handler = serverless(app);
+
+// app.listen(port, () => {
+//   console.log(`Server running on port ${port}`);
+// });

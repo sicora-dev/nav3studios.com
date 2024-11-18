@@ -45,7 +45,7 @@ function Reserva() {
     const checkAuth = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/check-auth`,
+          `${process.env.REACT_APP_BACKEND_URL}/check-auth`,
           {
             withCredentials: true,
           },
@@ -83,7 +83,7 @@ function Reserva() {
   
         try {
           const response = await axios.get(
-            `${process.env.REACT_APP_API_URL}/api/bookings/date`,
+            `${process.env.REACT_APP_BACKEND_URL}/bookings/date`,
             { params: { date } }
           );
           const newHours = response.data.freeRanges || [];
@@ -129,7 +129,7 @@ function Reserva() {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/api/user-token`, {
+      .get(`${process.env.REACT_APP_BACKEND_URL}/user-token`, {
         withCredentials: true,
       })
       .then((response) => {
@@ -137,7 +137,7 @@ function Reserva() {
       });
 
     axios
-      .get(`${process.env.REACT_APP_API_URL}/api/services`)
+      .get(`${process.env.REACT_APP_BACKEND_URL}/services`)
       .then((response) => {
         setServices(response.data);
       })
@@ -146,7 +146,7 @@ function Reserva() {
       });
 
     axios
-      .get(`${process.env.REACT_APP_API_URL}/api/producers`)
+      .get(`${process.env.REACT_APP_BACKEND_URL}/producers`)
       .then((response) => {
         setProducers(response.data);
       })
@@ -159,7 +159,7 @@ function Reserva() {
     try {
       try {
         const serviceName = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/services/${selectedService}/name`,
+          `${process.env.REACT_APP_BACKEND_URL}/services/${selectedService}/name`,
         );
         setServiceName(serviceName.data.name);
       } catch (error) {
@@ -168,7 +168,7 @@ function Reserva() {
       }
       try {
         const response = await axios.post(
-          `${process.env.REACT_APP_API_URL}/api/create-paypal-order`,
+          `${process.env.REACT_APP_BACKEND_URL}/create-paypal-order`,
           {
             userId: user,
             producerId: selectedProducer,
@@ -200,7 +200,7 @@ function Reserva() {
   const onApprove = async (data) => {
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/capture-paypal-order/${data.orderID}`,
+        `${process.env.REACT_APP_BACKEND_URL}/capture-paypal-order/${data.orderID}`,
         {
           userId: parseInt(user),
           producerId: selectedProducer,
@@ -251,7 +251,7 @@ function Reserva() {
         setBookingCreated(false);
 
         const response = await axios.post(
-          `${process.env.REACT_APP_API_URL}/api/createBooking`,
+          `${process.env.REACT_APP_BACKEND_URL}/createBooking`,
           {
             userId: user,
             producerId: selectedProducer,
@@ -289,7 +289,7 @@ function Reserva() {
   const handleNext = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/services/${selectedService}/price`,
+        `${process.env.REACT_APP_BACKEND_URL}/services/${selectedService}/price`,
       );
       setServicePrice(response.data.price);
       setNext(!next);

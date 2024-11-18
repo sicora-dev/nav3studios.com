@@ -31,7 +31,7 @@ function Login() {
     const checkAuth = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/check-auth`,
+          `${process.env.REACT_APP_BACKEND_URL}/check-auth`,
           {
             withCredentials: true,
           },
@@ -75,7 +75,7 @@ function Login() {
 
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/login`,
+        `${process.env.REACT_APP_BACKEND_URL}/login`,
         {
           identifier: email,
           password: password,
@@ -85,9 +85,6 @@ function Login() {
 
       const data = response.data;
       if (data.message === "Inicio de sesión exitoso") {
-        console.log("Inicio de sesión exitoso");
-
-        // Redirige al usuario a la página de reservas o a la página principal
         window.location.href = "/reserva";
       } else {
         setError(

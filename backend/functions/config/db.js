@@ -7,11 +7,7 @@ const pool = new Pool({
   database: process.env.DB_NAME,
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT
-  // user: "sicoranav3",
-  // host: "192.168.0.100",
-  // database: "nav3studiosdb",
-  // password: "Salmonela29",
-  // port: 5432,
+
 })
 
 pool.on('error', (err, client) => {

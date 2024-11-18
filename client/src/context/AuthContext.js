@@ -13,7 +13,7 @@ export function AuthProvider({ children }) {
   const checkAuth = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/check-auth`,
+        `${process.env.REACT_APP_BACKEND_URL}/check-auth`,
         { withCredentials: true }
       );
       setIsAuthenticated(response.status === 200);

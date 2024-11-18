@@ -1,0 +1,9 @@
+/login /index.html 200
+/register /index.html 200
+/reserva /index.html 200
+/account /index.html 200
+/success /index.html 200
+/cancel /index.html 200
+/verify-email /index.html 200
+/verify-email/* /index.html 200
+/information /index.html 200

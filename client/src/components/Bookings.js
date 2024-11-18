@@ -52,7 +52,7 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
   const handleAccept = async () => {
     try {
       const response = await axios.put(
-        `${process.env.REACT_APP_API_URL}/api/bookings/update/${activeBooking}`,
+        `${process.env.REACT_APP_BACKEND_URL}/bookings/update/${activeBooking}`,
         {
           status: "accepted",
         },
@@ -86,7 +86,7 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `${process.env.REACT_APP_API_URL}/api/bookings/update/${activeBooking}`,
+        `${process.env.REACT_APP_BACKEND_URL}/bookings/update/${activeBooking}`,
         {
           status: "canceled",
           reason: cancellation_reason,

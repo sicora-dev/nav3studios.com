@@ -21,7 +21,7 @@ function Register() {
     const checkAuth = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/check-auth`,
+          `${process.env.REACT_APP_BACKEND_URL}/check-auth`,
           {
             withCredentials: true,
           },
@@ -65,7 +65,7 @@ function Register() {
 
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/register`,
+        `${process.env.REACT_APP_BACKEND_URL}/register`,
         {
           username: username,
           email: email,
@@ -77,7 +77,6 @@ function Register() {
 
       const data = response.data;
       if (data.message === "Registro exitoso") {
-        console.log("Registro exitoso");
         setRegistering(false);
         navigate("/login", {
           state: { fromRegister: true },

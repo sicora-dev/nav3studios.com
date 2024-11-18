@@ -37,7 +37,7 @@ function ChangeUser({ settingsOption, userId }) {
   const updateUsername = async (userId, newUsername) => {
     try {
       const response = await axios.patch(
-        `${process.env.REACT_APP_API_URL}/api/update-username`,
+        `${process.env.REACT_APP_BACKEND_URL}/update-username`,
         {
           userId: userId,
           newUsername: newUsername,
@@ -58,7 +58,7 @@ function ChangeUser({ settingsOption, userId }) {
   const updateEmail = async (userId, newEmail) => {
     try {
       const response = await axios.patch(
-        `${process.env.REACT_APP_API_URL}/api/update-email`,
+        `${process.env.REACT_APP_BACKEND_URL}/update-email`,
         {
           userId: userId,
           newEmail: newEmail,
@@ -77,7 +77,7 @@ function ChangeUser({ settingsOption, userId }) {
   const updatePassword = async (userId, currentPassword, newPassword) => {
     try {
       const response = await axios.patch(
-        `${process.env.REACT_APP_API_URL}/api/update-password`,
+        `${process.env.REACT_APP_BACKEND_URL}/update-password`,
         {
           userId,
           currentPassword,
@@ -171,6 +171,7 @@ function ChangeUser({ settingsOption, userId }) {
                 type="text"
                 id="username"
                 required
+                autocomplete="off"
                 className="input-box block w-full border border-light-secondary bg-light-background p-2.5 ps-10 text-sm text-light-text outline-none focus:border-light-highlight focus:ring-light-highlight dark:border-dark-secondary dark:bg-dark-background dark:text-dark-text dark:placeholder-dark-text dark:focus:border-dark-buttons dark:focus:ring-dark-buttons"
                 placeholder="Nuevo usuario"
                 onChange={(e) => setNewUsername(e.target.value)}
@@ -209,6 +210,7 @@ function ChangeUser({ settingsOption, userId }) {
                 type="text"
                 id="email"
                 required
+                autocomplete="off"
                 className="input-box block w-full border border-light-secondary bg-light-background p-2.5 ps-10 text-sm text-light-text outline-none focus:border-light-highlight focus:ring-light-highlight dark:border-dark-secondary dark:bg-dark-background dark:text-dark-text dark:placeholder-dark-text dark:focus:border-dark-buttons dark:focus:ring-dark-buttons"
                 placeholder="Nuevo email"
                 onChange={(e) => setNewEmail(e.target.value)}
@@ -247,6 +249,7 @@ function ChangeUser({ settingsOption, userId }) {
                 type="password"
                 name="currentPassword"
                 required
+                autocomplete="off"
                 className="input-box block w-full border border-light-secondary bg-light-background p-2.5 ps-10 text-sm text-light-text outline-none focus:border-light-highlight focus:ring-light-highlight dark:border-dark-secondary dark:bg-dark-background dark:text-dark-text dark:placeholder-dark-text dark:focus:border-dark-buttons dark:focus:ring-dark-buttons"
                 placeholder="Contraseña Actual"
                 value={password}
@@ -276,6 +279,7 @@ function ChangeUser({ settingsOption, userId }) {
                 type="password"
                 name="newPassword"
                 required
+                autocomplete="off"
                 className="input-box block w-full border border-light-secondary bg-light-background p-2.5 ps-10 text-sm text-light-text outline-none focus:border-light-highlight focus:ring-light-highlight dark:border-dark-secondary dark:bg-dark-background dark:text-dark-text dark:placeholder-dark-text dark:focus:border-dark-buttons dark:focus:ring-dark-buttons"
                 placeholder="Nueva Contraseña"
                 value={newPassword}
@@ -305,6 +309,8 @@ function ChangeUser({ settingsOption, userId }) {
                 type="password"
                 name="confirmNewPassword"
                 required
+                autocomplete="off"
+                onpaste="return false;"
                 className="scroll-placeholder input-box block w-full border border-light-secondary bg-light-background p-2.5 ps-10 text-sm text-light-text outline-none focus:border-light-highlight focus:ring-light-highlight dark:border-dark-secondary dark:bg-dark-background dark:text-dark-text dark:placeholder-dark-text dark:focus:border-dark-buttons dark:focus:ring-dark-buttons"
                 placeholder="Confirmar Contraseña"
                 value={confirmPassword}

@@ -35,7 +35,7 @@ const Account = () => {
     const checkAuth = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/check-auth`,
+          `${process.env.REACT_APP_BACKEND_URL}/check-auth`,
           {
             withCredentials: true,
           },
@@ -55,7 +55,7 @@ const Account = () => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/user-token`,
+          `${process.env.REACT_APP_BACKEND_URL}/user-token`,
           {
             withCredentials: true,
           },
@@ -86,7 +86,7 @@ const Account = () => {
     const fetchUserBookings = async (userId) => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/bookings/user`,
+          `${process.env.REACT_APP_BACKEND_URL}/bookings/user`,
           {
             withCredentials: true,
             params: { userId: userId },
@@ -102,7 +102,7 @@ const Account = () => {
     const fetchProducerBookings = async (userId) => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/bookings/producer`,
+          `${process.env.REACT_APP_BACKEND_URL}/bookings/producer`,
           {
             withCredentials: true,
             params: { producerId: userId },
@@ -118,7 +118,7 @@ const Account = () => {
     const fetchAdminBookings = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/bookings`,
+          `${process.env.REACT_APP_BACKEND_URL}/bookings`,
           {
             withCredentials: true,
           },
@@ -175,7 +175,7 @@ const Account = () => {
   const handleLogout = async () => {
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/logout`,
+        `${process.env.REACT_APP_BACKEND_URL}/logout`,
         {},
         {
           withCredentials: true,
