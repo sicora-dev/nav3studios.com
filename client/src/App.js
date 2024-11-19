@@ -16,6 +16,8 @@ import SuccessPayment from "./pages/SuccessPayment";
 import CancelPayment from "./pages/CancelPayment";
 import Account from "./pages/Account";
 import VerifyEmail from "./pages/VerifyEmail.js";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import "./styles/index.css";
 
 const Reserva = lazy(() => import("./pages/Reserva"));
@@ -62,9 +64,14 @@ function App() {
                   <Route path="/account" element={<Account />} />
                   <Route path="/success" element={<SuccessPayment />} />
                   <Route path="/cancel" element={<CancelPayment />} />
+                  <Route path="/forgot-password" element={<ForgotPassword />} />
                   <Route
                     path="/verify-email/:token"
                     element={<VerifyEmail />}
+                  />
+                  <Route
+                    path="/reset-password/:token"
+                    element={<ResetPassword />}
                   />
                   <Route path="/" element={<Home />} />
                 </Routes>

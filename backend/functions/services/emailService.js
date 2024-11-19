@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
-const dns = require('dns');
-const { promisify } = require('util');
+const dns = require("dns");
+const { promisify } = require("util");
 const resolveMx = promisify(dns.resolveMx);
 
 const transporter = nodemailer.createTransport({
@@ -66,6 +66,8 @@ const validDomains = [
   "edu",
   "ac.uk",
   "edu.es",
+  "alumnojoyfe.iepgroup.es",
+  "iepgroup.es"
 
   // Business/Professional
   "outlook.es",
@@ -127,4 +129,27 @@ const sendVerificationEmail = async (email, verificationToken) => {
   return transporter.sendMail(mailOptions);
 };
 
-module.exports = { sendVerificationEmail, isValidEmail };
+const sendPasswordResetEmail = async (email, resetToken) => {
+  const mailOptions = {
+    from: '"NAV3 Studios" <nav3studios@nav3studios.com>',
+    to: email,
+    subject: "Restablece tu contraseña en NAV3 Studios",
+    html: `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+      <h1 style="color: #EB5E28;">Restablece tu contraseña</h1>
+      <p>Para restablecer tu contraseña, haz click en el siguiente enlace:</p>
+      <a href="${process.env.FRONTEND_URL}/reset-password/${resetToken}" 
+         style="background-color: #EB5E28; color: white; padding: 10px 20px; 
+         text-decoration: none; border-radius: 5px; display: inline-block;">
+        Restablecer contraseña
+      </a>
+    </div>
+  `,
+  };
+};
+
+module.exports = {
+  sendVerificationEmail,
+  isValidEmail,
+  sendPasswordResetEmail,
+};

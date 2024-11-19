@@ -17,6 +17,8 @@ const app = express();
 const path = require("path");
 const port = process.env.NODE_PORT || 5000;
 
+app.set('trust proxy', 1); // Trust the first proxy
+
 app.use(
   helmet({
     contentSecurityPolicy: {
