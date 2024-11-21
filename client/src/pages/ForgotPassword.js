@@ -51,14 +51,16 @@ function ForgotPassword() {
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/forgot-password`,
-        { email }
+        { email },
       );
 
       setMessage("Correo de restablecimiento de contraseña enviado.");
       setLoading(false);
     } catch (error) {
       console.error("Error al enviar el correo de restablecimiento:", error);
-      setError("Error al enviar el correo de restablecimiento. Inténtalo de nuevo.");
+      setError(
+        "Error al enviar el correo de restablecimiento. Inténtalo de nuevo.",
+      );
       setLoading(false);
     }
   };
@@ -125,7 +127,8 @@ function ForgotPassword() {
               onChange={(e) => setEmail(e.target.value)}
             />
           </section>
-          {error && <div className="mb-4 text-red-500">{error}</div>}
+          {error && <div className="mb-4 text-red-700">{error}</div>}
+          {message && <div className="mb-4 text-green-700">{message}</div>}
           <div className="flex w-fit gap-2">
             <button
               type="submit"
@@ -139,11 +142,15 @@ function ForgotPassword() {
               </button>
             </NavLink>
           </div>
+
+          {loading && (
+            <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50">
+              <div className="relative flex w-full flex-col items-center justify-center gap-4">
+                <LoadingSpinner />
+              </div>
+            </div>
+          )}
         </form>
-        <div className="absolute">
-        {loading && <LoadingSpinner />}
-        </div>
-        
       </div>
     </main>
   );

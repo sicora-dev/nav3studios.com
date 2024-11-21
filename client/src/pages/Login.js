@@ -204,9 +204,9 @@ function Login() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </section>
-          {error && <div className="mb-4 text-red-500">{error}</div>}
+          {error && <div className="mb-4 text-red-700">{error}</div>}
           {successfulRegister && (
-            <div className="mb-4 text-green-500">{successfulRegister}</div>
+            <div className="mb-4 text-green-700">{successfulRegister}</div>
           )}
           <div className="flex w-fit gap-2">
             <button

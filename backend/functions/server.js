@@ -1,4 +1,4 @@
-require("dotenv").config({ path: ".env" });
+require("dotenv").config(".env");
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
@@ -17,7 +17,7 @@ const app = express();
 const path = require("path");
 const port = process.env.NODE_PORT || 5000;
 
-
+app.set('trust proxy', 1); // Trust the first proxy
 
 app.use(
   helmet({
@@ -53,6 +53,7 @@ app.use(express.static(path.join(__dirname, "../../client/build")));
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutos
   max: 100, // Limita cada IP a 100 solicitudes por ventana
+  keyGenerator: (req) => req.ip
 });
 app.use(limiter);
 
@@ -75,8 +76,10 @@ app.use((req, res, next) => {
 
 initCronJobs();
 
-module.exports.handler = serverless(app);
+exports.handler = serverless(app);
 
 // app.listen(port, () => {
 //   console.log(`Server running on port ${port}`);
 // });
+
+

@@ -455,7 +455,7 @@ function Reserva() {
               </section>
             )}
             {error && (
-              <p className="w-full text-center font-title text-sm font-bold text-red-500">
+              <p className="w-full text-center font-title text-sm font-bold text-red-700">
                 {error}
               </p>
             )}
@@ -507,7 +507,7 @@ function Reserva() {
                   </button>
                 </div>
                 {paymentError && (
-                  <div className="mt-2 text-red-500">{paymentError}</div>
+                  <div className="mt-2 text-red-700">{paymentError}</div>
                 )}
               </div>
             ) : (
@@ -530,7 +530,7 @@ function Reserva() {
             )}
 
             {paymentError && (
-              <div className="mt-2 text-red-500">{paymentError}</div>
+              <div className="mt-2 text-red-700">{paymentError}</div>
             )}
 
           </form>

@@ -2,6 +2,6 @@ verificacion de email en reservas (en reservas podria hacer una doble confirmaci
 
 que solo se puedan escoger horas mas haya del dia de hoy, por ejemplo el 12 de noviembre a las 15:00 solo se podran coger horas a partir del 13 de noviembre a las 15:00
 
-forgot-password
+galeria de imagenes local chula
 
-galerai de imagenes local chula
+success payment bien

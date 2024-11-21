@@ -130,7 +130,7 @@ function Register() {
           onSubmit={handleSubmit}
           className="flex w-full flex-col items-center"
         >
-          {error && <div className="mb-4 text-red-500">{error}</div>}
+          {error && <div className="mb-4 text-red-700">{error}</div>}
           <section className="relative mb-6">
             <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3.5">
               <svg

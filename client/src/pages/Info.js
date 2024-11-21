@@ -1,4 +1,5 @@
 import Map from "../components/Map";
+import LazyLoadLocal from "../components/LazyLoadLocal";
 import "../styles/info.css";
 import React, { useState, useEffect } from "react";
 
@@ -39,22 +40,22 @@ function Info() {
   return (
     <main className="flex w-full flex-col items-center p-5">
       <h2 className="p-10 text-center font-title text-3xl font-bold text-light-buttons dark:text-light-buttons">
-        ¿DONDE ESTAMOS?
+        ¿DÓNDE ESTAMOS?
       </h2>
       <Map />
 
-      <div className="mt-10 flex h-96 w-full flex-col">
+      <div className="mt-10 flex h-fit w-full hb- flex-col">
         <h2 className="p-10 text-center font-title text-3xl font-bold text-light-buttons dark:text-light-buttons">
           NUESTROS PRODUCTORES
         </h2>
-        <div className="m-auto grid grid-cols-1 gap-10 pb-20 xl:grid-cols-2">
+        <div className="m-auto  grid grid-cols-1 gap-10 pb-20 xl:grid-cols-2">
           {[1, 2].map((id) => (
             <div
               key={id}
               onMouseMove={(e) => handleMouseMove(e, id)}
               onMouseEnter={() => handleMouseEnter(id)}
               onMouseLeave={handleMouseLeave}
-              className="relative flex max-w-md overflow-hidden border border-light-text bg-gradient-to-b from-light-background to-light-secondary px-8 py-8 shadow-2xl transition-all duration-500 ease-in-out hover:max-h-[1200px] dark:border-dark-secondary dark:from-dark-background dark:to-dark-secondary xl:max-h-[460px]"
+              className="relative flex h-full max-w-md overflow-hidden border border-light-text bg-gradient-to-b from-light-background to-light-secondary px-8 py-8 shadow-2xl transition-all duration-500 ease-in-out hover:max-h-[1200px] dark:border-dark-secondary dark:from-dark-background dark:to-dark-secondary xl:max-h-[460px]"
             >
               <input
                 aria-hidden="true"
@@ -145,6 +146,10 @@ function Info() {
           ))}
         </div>
       </div>
+      <h2 className="p-10 text-center font-title text-3xl font-bold text-light-buttons dark:text-light-buttons">
+        GALERIA DE IMÁGENES
+      </h2>
+      <LazyLoadLocal />
     </main>
   );
 }

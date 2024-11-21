@@ -7,4 +7,7 @@
 /verify-email /index.html 200
 /verify-email/* /index.html 200
 /information /index.html 200
+/reset-password /index.html 200
+/reset-password/* /index.html 200
+/forgot-password /index.html 200
 

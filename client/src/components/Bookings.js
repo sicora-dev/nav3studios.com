@@ -236,7 +236,7 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
                     onChange={(e) => setCancellationReason(e.target.value)}
                   />
                   {cancellationError && (
-                    <p className="text-red-500">{cancellationError}</p>
+                    <p className="text-red-700">{cancellationError}</p>
                   )}
                   <button
                     className="bg-light-highlight px-2 py-1 dark:bg-dark-highlight"
@@ -429,7 +429,7 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
                     onChange={(e) => setCancellationReason(e.target.value)}
                   />
                   {cancellationError && (
-                    <p className="text-red-500">{cancellationError}</p>
+                    <p className="text-red-700">{cancellationError}</p>
                   )}
                   <button
                     className="bg-light-highlight px-2 py-1 dark:bg-dark-highlight"

@@ -39,7 +39,7 @@ function Navbar() {
 
   return (
     <>
-      <div className="absolute z-50 md:hidden">
+      <div className="absolute z-50 md:hidden text-light-buttons">
         <Hamburger toggled={!isClosed} onToggle={toogleMenu} />
       </div>
 

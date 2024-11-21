@@ -67,7 +67,7 @@ const validDomains = [
   "ac.uk",
   "edu.es",
   "alumnojoyfe.iepgroup.es",
-  "iepgroup.es"
+  "iepgroup.es",
 
   // Business/Professional
   "outlook.es",
@@ -146,6 +146,7 @@ const sendPasswordResetEmail = async (email, resetToken) => {
     </div>
   `,
   };
+  return transporter.sendMail(mailOptions);
 };
 
 module.exports = {

@@ -347,9 +347,9 @@ function ChangeUser({ settingsOption, userId }) {
   return (
     <div className="flex flex-col items-center px-2 py-5">
       {successMessage && (
-        <p className="mb-4 text-green-500">{successMessage}</p>
+        <p className="mb-4 text-green-700">{successMessage}</p>
       )}
-      {error && <p className="mb-4 text-red-500">{error}</p>}
+      {error && <p className="mb-4 text-red-700">{error}</p>}
       {renderForm()}
     </div>
   );

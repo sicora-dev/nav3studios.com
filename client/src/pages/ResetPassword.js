@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -9,6 +9,30 @@ const ResetPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  
+
+  useEffect(() => {
+    const checkToken = async () => { 
+      if (!token) {
+        navigate("/forgot-password");
+        return;
+      } 
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}/check-reset-token/${token}`
+        );
+
+        if (!response.data.valid) {
+          navigate("/forgot-password");
+        }
+      } catch (error) {
+        console.error("Error al comprobar el token:", error);
+        navigate("/forgot-password");
+      }
+    };
+    checkToken();
+  }, [token, navigate]);
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -66,8 +90,8 @@ const ResetPassword = () => {
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </section>
-          {error && <div className="mb-4 text-red-500">{error}</div>}
-          {message && <div className="mb-4 text-green-500">{message}</div>}
+          {error && <div className="mb-4 text-red-700">{error}</div>}
+          {message && <div className="mb-4 text-green-700">{message}</div>}
           <div className="flex w-fit gap-2">
             <button
               type="submit"
