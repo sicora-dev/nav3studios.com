@@ -32,7 +32,7 @@ const Services = memo(function Services() {
       <h2 className="p-10 text-center font-title text-3xl font-bold text-light-highlight dark:text-dark-highlight">
         NUESTROS SERVICIOS
       </h2>
-      <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 mb-28">
         {[1, 2, 3, 4].map((id) => (
           <div
             key={id}

@@ -26,7 +26,7 @@ function Reserva() {
   const [paymentError, setPaymentError] = useState("");
   const [servicePrice, setServicePrice] = useState(0);
 
-  const [next, setNext] = useState(false);
+  const [next, setNext] = useState(true);
   const [bookingCreated, setBookingCreated] = useState(null);
   const [activeDiv, setActiveDiv] = useState(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -41,25 +41,25 @@ function Reserva() {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/check-auth`,
-          {
-            withCredentials: true,
-          },
-        );
-        if (response.status !== 200) {
-          throw new Error("Not authenticated");
-        }
-      } catch (error) {
-        navigate("/login", { state: { fromReserva: true } });
-        setError("Debes iniciar sesión para hacer una reserva");
-      }
-    };
-    checkAuth();
-  }, [navigate]);
+  // useEffect(() => {
+  //   const checkAuth = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         `${process.env.REACT_APP_BACKEND_URL}/check-auth`,
+  //         {
+  //           withCredentials: true,
+  //         },
+  //       );
+  //       if (response.status !== 200) {
+  //         throw new Error("Not authenticated");
+  //       }
+  //     } catch (error) {
+  //       navigate("/login", { state: { fromReserva: true } });
+  //       setError("Debes iniciar sesión para hacer una reserva");
+  //     }
+  //   };
+  //   checkAuth();
+  // }, [navigate]);
 
   useEffect(() => {
     const month = (selectedDate.getMonth() + 1).toString().padStart(2, "0");
@@ -70,38 +70,38 @@ function Reserva() {
   }, [selectedDate, selectedHour]);
 
   const debouncedFetchHours = useMemo(
-    () => 
+    () =>
       debounce(async (date) => {
         // Agregar validación de cache expirado
         const cacheExpiry = 5 * 60 * 1000; // 5 minutos
         const cacheEntry = dateCache[date];
-        
-        if (cacheEntry && (Date.now() - cacheEntry.timestamp) < cacheExpiry) {
+
+        if (cacheEntry && Date.now() - cacheEntry.timestamp < cacheExpiry) {
           setFreeHours(cacheEntry.hours);
           return;
         }
-  
+
         try {
           const response = await axios.get(
             `${process.env.REACT_APP_BACKEND_URL}/bookings/date`,
-            { params: { date } }
+            { params: { date } },
           );
           const newHours = response.data.freeRanges || [];
-  
-          setDateCache(prev => ({
+
+          setDateCache((prev) => ({
             ...prev,
             [date]: {
               hours: newHours,
-              timestamp: Date.now()
-            }
+              timestamp: Date.now(),
+            },
           }));
-  
+
           setFreeHours(newHours);
         } catch (error) {
           console.error("Failed to fetch free hours:", error);
         }
       }, 500),
-    [dateCache]
+    [dateCache],
   );
 
   const handleMouseMove = (e, id) => {
@@ -304,7 +304,7 @@ function Reserva() {
   }, [selectedDate]);
 
   return (
-    <main className="flex h-full w-full flex-col items-center">
+    <main className="overflo flex h-fit w-full flex-col items-center">
       <h2 className="p-10 text-center font-title text-3xl font-bold text-light-buttons dark:text-light-buttons">
         HAZ TU RESERVA
       </h2>
@@ -313,7 +313,7 @@ function Reserva() {
         onMouseMove={(e) => handleMouseMove(e, 1)}
         onMouseEnter={() => handleMouseEnter(1)}
         onMouseLeave={handleMouseLeave}
-        className="relative flex h-fit min-w-[90%] overflow-hidden border border-light-text bg-gradient-to-b from-light-background to-light-secondary px-8 py-8 shadow-2xl transition-all duration-500 ease-in-out dark:border-dark-secondary dark:from-dark-background dark:to-dark-secondary md:min-w-fit"
+        className="relative mb-28 flex h-fit min-w-[90%] border border-light-text bg-gradient-to-b from-light-background to-light-secondary px-8 py-8 shadow-2xl transition-all duration-500 ease-in-out md:min-w-fit dark:border-dark-secondary dark:from-dark-background dark:to-dark-secondary"
       >
         <input
           aria-hidden="true"
@@ -532,7 +532,6 @@ function Reserva() {
             {paymentError && (
               <div className="mt-2 text-red-700">{paymentError}</div>
             )}
-
           </form>
         )}
       </div>

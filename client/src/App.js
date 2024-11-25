@@ -85,7 +85,7 @@ function App() {
                 checked={isDarkMode}
                 onChange={toggleDarkMode}
                 size={30}
-                className="text-light-buttons"
+                
                 
               />
             </button>

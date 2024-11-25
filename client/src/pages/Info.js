@@ -44,7 +44,7 @@ function Info() {
       </h2>
       <Map />
 
-      <div className="mt-10 flex h-fit w-full hb- flex-col">
+      <div className="mt-10 flex h-fit w-full flex-col">
         <h2 className="p-10 text-center font-title text-3xl font-bold text-light-buttons dark:text-light-buttons">
           NUESTROS PRODUCTORES
         </h2>
