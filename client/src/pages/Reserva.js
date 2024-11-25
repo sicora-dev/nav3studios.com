@@ -7,6 +7,7 @@ import { es } from "date-fns/locale";
 import "react-day-picker/style.css";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { set } from "date-fns";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 function Reserva() {
   const [user, setUser] = useState([]);
@@ -20,19 +21,20 @@ function Reserva() {
   const [selectedHour, setSelectedHour] = useState();
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [bookingDate, setBookingDate] = useState();
-  const [paymentMethod, setPaymentMethod] = useState(1);
+  const [paymentMethod, setPaymentMethod] = useState(-1);
 
   const [isPayPalReady, setIsPayPalReady] = useState(false);
   const [paymentError, setPaymentError] = useState("");
   const [servicePrice, setServicePrice] = useState(0);
 
-  const [next, setNext] = useState(true);
+  const [next, setNext] = useState(3);
   const [bookingCreated, setBookingCreated] = useState(null);
   const [activeDiv, setActiveDiv] = useState(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [opacity, setOpacity] = useState(0);
   const [mode, setMode] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loadingDetails, setLoadingDetails] = useState(false);
   const [error, setError] = useState("");
   const defaultClassNames = getDefaultClassNames();
   const allHours = [9, 11, 13, 15, 17, 19];
@@ -278,7 +280,8 @@ function Reserva() {
 
   const handleBack = async () => {
     setPaymentMethod(1);
-    setNext(!next);
+    if (next < 1) return;
+    setNext(next - 1);
   };
 
   const handlePaymentMethod = (e) => {
@@ -286,16 +289,31 @@ function Reserva() {
     setPaymentMethod(value === "online" ? 2 : 1);
     setPaymentError("");
   };
-  const handleNext = async () => {
-    try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/services/${selectedService}/price`,
-      );
-      setServicePrice(response.data.price);
-      setNext(!next);
-    } catch (error) {
-      console.error("Error al obtener el precio del servicio:", error);
-      setError("Error al obtener el precio del servicio");
+  const handleNext = async (page) => {
+    if (page < 0 || page > 3) return;
+    if (page !== 2) {
+      setNext(next + 1);
+      return;
+    }
+
+    if (page === 2) {
+      setLoadingDetails(true);
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}/services/${selectedService}/price`,
+        );
+        setServicePrice(response.data.price);
+        setLoadingDetails(false);
+        setNext(next + 1);
+      } catch (error) {
+        setLoadingDetails(false);
+        console.error("Error al obtener el precio del servicio:", error);
+        setError("Error al obtener el precio del servicio");
+      }
+    }
+    if (page === 3) {
+      setNext(3);
+      return;
     }
   };
 
@@ -304,7 +322,7 @@ function Reserva() {
   }, [selectedDate]);
 
   return (
-    <main className="overflo flex h-fit w-full flex-col items-center">
+    <main className="flex h-fit w-full flex-col items-center">
       <h2 className="p-10 text-center font-title text-3xl font-bold text-light-buttons dark:text-light-buttons">
         HAZ TU RESERVA
       </h2>
@@ -334,12 +352,12 @@ function Reserva() {
                 : "none",
           }}
         />
-        {!next && (
+        {next === 0 && (
           <form
             className="flex w-full flex-col items-center gap-5"
             onSubmit={(e) => {
               e.preventDefault();
-              handleNext();
+              handleNext(0);
             }}
           >
             <div>
@@ -368,6 +386,30 @@ function Reserva() {
                   ))}
                 </select>
               </section>
+            </div>
+
+            {error && (
+              <p className="w-full text-center font-title text-sm font-bold text-red-700">
+                {error}
+              </p>
+            )}
+            <button
+              type="submit"
+              className="bg-light-buttons px-2 py-1 dark:bg-dark-buttons"
+            >
+              Siguiente
+            </button>
+          </form>
+        )}
+        {next === 1 && (
+          <form
+            className="flex w-full flex-col items-center gap-5"
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleNext();
+            }}
+          >
+            <div>
               <section className="flex flex-col">
                 <label
                   for="service_select"
@@ -394,145 +436,269 @@ function Reserva() {
                 </select>
               </section>
             </div>
-            <section className="flex max-w-full justify-center">
-              <DayPicker
-                mode="single"
-                locale={es}
-                classNames={{
-                  container: "flex flex-col gap-5",
-                  caption: "text-xl font-bold",
-                  body: "grid grid-cols-7 gap-2",
-                  today:
-                    "text-light-highlight dark:text-dark-highlight font-bold",
-                  selected: "bg-light-buttons dark:bg-dark-buttons",
-                  disabled: "text-gray-400",
-                  outside: "text-gray-400",
-                  footer: "font-title text-xl font-bold",
-                  chevron: " fill-light-buttons",
-                }}
-                required
-                selected={selectedDate}
-                onSelect={(date) => {
-                  setSelectedDate(date); // Store the Date object directly
-                }}
-                disabled={{ before: new Date() }}
-                footer={
-                  selectedDate && !selectedHour
-                    ? `Dia: ${selectedDate.toLocaleDateString()}`
-                    : selectedDate && selectedHour
-                      ? `Dia: ${selectedDate.toLocaleDateString()} Hora: ${selectedHour}:00 - ${selectedHour + 2}:00`
-                      : "Selecciona un día."
-                }
-              />
-            </section>
-            {selectedDate && (
-              <section className="flex flex-col">
-                <label
-                  for="hour_select"
-                  className="font-title text-xl font-bold"
-                >
-                  Horas disponibles
-                </label>
-                <select
-                  id="hour_select"
-                  name="producer"
-                  required
-                  className="w-[322px] bg-light-background p-2 dark:bg-dark-background"
-                  onChange={(e) => setSelectedHour(Number(e.target.value))}
-                >
-                  {allHours.map((hour) => (
-                    <option
-                      key={hour}
-                      value={hour}
-                      disabled={!freeHours.includes(hour)}
-                      className="text-light-text disabled:font-bold disabled:text-gray-600 dark:text-dark-text"
-                    >
-                      {hour}:00 - {hour + 2}:00
-                      {!freeHours.includes(hour) && " (No disponible) "}
-                    </option>
-                  ))}
-                </select>
-              </section>
-            )}
             {error && (
               <p className="w-full text-center font-title text-sm font-bold text-red-700">
                 {error}
               </p>
             )}
-            <button
-              type="submit"
-              className="bg-light-buttons px-2 py-1 dark:bg-dark-buttons"
-            >
-              Siguiente
-            </button>
+            <div className="flex justify-center gap-5">
+              <button
+                type="button"
+                onClick={handleBack}
+                className="bg-light-secondary px-2 py-1 dark:bg-dark-secondary"
+              >
+                Volver
+              </button>
+
+              <button
+                type="submit"
+                className="bg-light-buttons px-2 py-1 dark:bg-dark-buttons"
+              >
+                Siguiente
+              </button>
+            </div>
           </form>
         )}
-        {next && (
+        {next === 2 && (
           <form
             className="flex w-full flex-col items-center gap-5"
-            onSubmit={(e) => handleSubmit(e)}
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleNext();
+            }}
           >
-            <label className="font-title text-xl font-bold">
-              Metodo de pago
-            </label>
-            <select
-              id="payment_select"
-              name="payment"
-              required
-              className="w-[322px] bg-light-background p-2 dark:bg-dark-background"
-              onChange={(e) => handlePaymentMethod(e)}
-            >
-              <option value="cash">Cash</option>
-              <option value="online">Pago online</option>
-            </select>
-            {paymentMethod === 2 ? (
-              <div className="w-[322px]">
-                <PayPalButtons
-                  createOrder={createOrder}
-                  onApprove={onApprove}
-                  onError={(err) => {
-                    console.error("PayPal Error:", err);
-                    setPaymentError("Error processing payment");
+            <div>
+              <section className="flex max-w-full justify-center">
+                <DayPicker
+                  mode="single"
+                  locale={es}
+                  classNames={{
+                    container: "flex flex-col gap-5",
+                    caption: "text-xl font-bold",
+                    body: "grid grid-cols-7 gap-2",
+                    today:
+                      "text-light-highlight dark:text-dark-highlight font-bold",
+                    selected: "bg-light-buttons dark:bg-dark-buttons",
+                    disabled: "text-gray-400",
+                    outside: "text-gray-400",
+                    footer: "font-title text-xl font-bold",
+                    chevron: " fill-light-buttons",
                   }}
-                  style={{ layout: "horizontal" }}
-                  disabled={!servicePrice} // Deshabilita si no hay precio
+                  required
+                  selected={selectedDate}
+                  onSelect={(date) => {
+                    setSelectedDate(date); // Store the Date object directly
+                  }}
+                  disabled={{ before: new Date() }}
+                  footer={
+                    selectedDate && !selectedHour
+                      ? `Dia: ${selectedDate.toLocaleDateString()}`
+                      : selectedDate && selectedHour
+                        ? `Dia: ${selectedDate.toLocaleDateString()} Hora: ${selectedHour}:00 - ${selectedHour + 2}:00`
+                        : "Selecciona un día."
+                  }
                 />
-                <div className="flex justify-center">
-                  <button
-                    type="button"
-                    onClick={handleBack}
-                    className="bg-light-secondary px-2 py-1 dark:bg-dark-secondary"
+              </section>
+              {selectedDate && (
+                <section className="flex flex-col">
+                  <label
+                    for="hour_select"
+                    className="font-title text-xl font-bold"
                   >
-                    Volver
-                  </button>
+                    Horas disponibles
+                  </label>
+                  <select
+                    id="hour_select"
+                    name="producer"
+                    required
+                    className="w-[322px] bg-light-background p-2 dark:bg-dark-background"
+                    onChange={(e) => setSelectedHour(Number(e.target.value))}
+                  >
+                    {allHours.map((hour) => (
+                      <option
+                        key={hour}
+                        value={hour}
+                        disabled={!freeHours.includes(hour)}
+                        className="text-light-text disabled:font-bold disabled:text-gray-600 dark:text-dark-text"
+                      >
+                        {hour}:00 - {hour + 2}:00
+                        {!freeHours.includes(hour) && " (No disponible) "}
+                      </option>
+                    ))}
+                  </select>
+                </section>
+              )}
+            </div>
+            <div className="flex justify-center gap-5">
+              <button
+                type="button"
+                onClick={handleBack}
+                className="bg-light-secondary px-2 py-1 dark:bg-dark-secondary"
+              >
+                Volver
+              </button>
+
+              <button
+                type="submit"
+                className="bg-light-buttons px-2 py-1 dark:bg-dark-buttons"
+              >
+                Siguiente
+              </button>
+            </div>
+          </form>
+        )}
+        {next === 3 && (
+          <>
+            {loadingDetails && (
+              <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50">
+                <div className="relative flex w-full flex-col items-center justify-center gap-4">
+                  <LoadingSpinner />
                 </div>
+              </div>
+            )}
+            <div className="flex-col">
+              <div className="flex flex-col items-center">
+                <h2 className="text-center font-title text-3xl font-bold text-light-highlight dark:text-dark-highlight">
+                  Resumen de la reserva
+                </h2>
+                <div className="flex flex-col gap-5">
+                  <div className="flex flex-col gap-5">
+                    <p className="text-light-text dark:text-dark-text">
+                      Productor:{" "}
+                      <span className="font-bold">{selectedProducer}</span>
+                    </p>
+                    <p className="text-light-text dark:text-dark-text">
+                      Servicio:{" "}
+                      <span className="font-bold">{selectedService}</span>
+                    </p>
+                    <p className="text-light-text dark:text-dark-text">
+                      Fecha:{" "}
+                      <span className="font-bold">
+                        {selectedDate.toLocaleDateString()}
+                      </span>
+                    </p>
+                    <p className="text-light-text dark:text-dark-text">
+                      Hora:{" "}
+                      <span className="font-bold">
+                        {selectedHour}:00 - {selectedHour + 2}:00
+                      </span>
+                    </p>
+                    <p className="text-light-text dark:text-dark-text">
+                      Precio: <span className="font-bold">{servicePrice}€</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <form
+                className="flex w-full flex-col items-center gap-5"
+                onSubmit={(e) => handleSubmit(e)}
+              >
+                <label className="mt-5 font-title text-xl font-bold">
+                  Metodo de pago
+                </label>
+                <ul className="flex items-center gap-5">
+                  <li>
+                    <input
+                      type="radio"
+                      id="cash"
+                      value="cash"
+                      name="payment"
+                      className="peer hidden"
+                      onChange={(e) => {
+                        handlePaymentMethod(e);
+                      }}
+                    ></input>
+                    <label
+                      htmlFor="cash"
+                      className="cursor-pointer bg-light-secondary px-2 py-1 shadow-[0_0.5em_0.5em_-0.4em_#EB5E28] transition ease-in-out active:translate-y-1 active:text-light-highlight active:shadow-none md:shadow-none md:hover:-translate-y-1 md:hover:text-light-highlight md:hover:shadow-[0_0.5em_0.5em_-0.4em_#EB5E28] md:peer-checked:-translate-y-1 md:peer-checked:shadow-[0_0.5em_0.5em_-0.4em_#EB5E28] dark:bg-dark-secondary active:dark:text-dark-highlight md:dark:hover:text-dark-highlight"
+                      style={{ display: "inline-block" }}
+                    >
+                      Efectivo
+                    </label>
+                  </li>
+                  <li>
+                    <input
+                      type="radio"
+                      id="online"
+                      value="online"
+                      name="payment"
+                      className="peer hidden"
+                      onChange={(e) => {
+                        handlePaymentMethod(e);
+                      }}
+                    ></input>
+                    <label
+                      htmlFor="online"
+                      className="cursor-pointer bg-light-secondary px-2 py-1 shadow-[0_0.5em_0.5em_-0.4em_#EB5E28] transition ease-in-out active:translate-y-1 active:text-light-highlight active:shadow-none md:shadow-none md:hover:-translate-y-1 md:hover:text-light-highlight md:hover:shadow-[0_0.5em_0.5em_-0.4em_#EB5E28] md:peer-checked:-translate-y-1 md:peer-checked:shadow-[0_0.5em_0.5em_-0.4em_#EB5E28] dark:bg-dark-secondary active:dark:text-dark-highlight md:dark:hover:text-dark-highlight"
+                      style={{ display: "inline-block" }} // Asegúrate de que el label sea un elemento en línea
+                    >
+                      Paypal
+                    </label>
+                  </li>
+                </ul>
+
+                {paymentMethod === 2 && (
+                  <div className="w-[322px]">
+                    <PayPalButtons
+                      createOrder={createOrder}
+                      onApprove={onApprove}
+                      onError={(err) => {
+                        console.error("PayPal Error:", err);
+                        setPaymentError("Error processing payment");
+                      }}
+                      style={{ layout: "horizontal" }}
+                      disabled={!servicePrice} // Deshabilita si no hay precio
+                    />
+                    <div className="flex justify-center">
+                      <button
+                        type="button"
+                        onClick={handleBack}
+                        className="bg-light-secondary px-2 py-1 dark:bg-dark-secondary"
+                      >
+                        Volver
+                      </button>
+                    </div>
+                    {paymentError && (
+                      <div className="mt-2 text-red-700">{paymentError}</div>
+                    )}
+                  </div>
+                )}
+                {paymentMethod === 1 && (
+                  <div className="flex justify-center gap-5">
+                    <button
+                      type="button"
+                      onClick={handleBack}
+                      className="bg-light-secondary px-2 py-1 dark:bg-dark-secondary"
+                    >
+                      Volver
+                    </button>
+
+                    <button
+                      type="submit"
+                      className="bg-light-buttons px-2 py-1 dark:bg-dark-buttons"
+                    >
+                      Confirmar
+                    </button>
+                  </div>
+                )}
+                {paymentMethod === -1 && (
+                  <div className="flex justify-center gap-5">
+                    <button
+                      type="button"
+                      onClick={handleBack}
+                      className="bg-light-secondary px-2 py-1 dark:bg-dark-secondary"
+                    >
+                      Volver
+                    </button>
+                  </div>
+                )}
+
                 {paymentError && (
                   <div className="mt-2 text-red-700">{paymentError}</div>
                 )}
-              </div>
-            ) : (
-              <div className="flex gap-5">
-                <button
-                  type="button"
-                  onClick={handleBack}
-                  className="bg-light-secondary px-2 py-1 dark:bg-dark-secondary"
-                >
-                  Volver
-                </button>
-                <button
-                  type="submit"
-                  className="bg-light-buttons px-2 py-1 dark:bg-dark-buttons"
-                  disabled={isSubmitting} // Deshabilita el botón si se está procesando
-                >
-                  Continuar
-                </button>
-              </div>
-            )}
-
-            {paymentError && (
-              <div className="mt-2 text-red-700">{paymentError}</div>
-            )}
-          </form>
+              </form>
+            </div>
+          </>
         )}
       </div>
     </main>
