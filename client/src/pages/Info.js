@@ -1,7 +1,8 @@
 import Map from "../components/Map";
 import LazyLoadLocal from "../components/LazyLoadLocal";
 import "../styles/info.css";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 function Info() {
   const [activeDiv, setActiveDiv] = useState(null);
@@ -38,6 +39,7 @@ function Info() {
   });
 
   return (
+    <Suspense fallback={<LoadingSpinner />}>
     <main className="flex w-full flex-col items-center p-5">
       <h2 className="p-10 text-center font-title text-3xl font-bold text-light-buttons dark:text-light-buttons">
         ¿DÓNDE ESTAMOS?
@@ -151,6 +153,7 @@ function Info() {
       </h2>
       <LazyLoadLocal />
     </main>
+    </Suspense>
   );
 }
 

@@ -16,16 +16,18 @@ function Reserva() {
   const [freeHours, setFreeHours] = useState([]);
 
   const [selectedProducer, setSelectedProducer] = useState(1);
+  const [producerName, setproducerName] = useState("");
+  const [producerEmail, setProducerEmail] = useState("");
   const [selectedService, setSelectedService] = useState(1);
   const [serviceName, setServiceName] = useState();
-  const [selectedHour, setSelectedHour] = useState();
+  const [servicePrice, setServicePrice] = useState(0);
+  const [selectedHour, setSelectedHour] = useState(9);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [bookingDate, setBookingDate] = useState();
   const [paymentMethod, setPaymentMethod] = useState(-1);
 
   const [isPayPalReady, setIsPayPalReady] = useState(false);
   const [paymentError, setPaymentError] = useState("");
-  const [servicePrice, setServicePrice] = useState(0);
 
   const [next, setNext] = useState(3);
   const [bookingCreated, setBookingCreated] = useState(null);
@@ -299,16 +301,26 @@ function Reserva() {
     if (page === 2) {
       setLoadingDetails(true);
       try {
-        const response = await axios.get(
+        const price = await axios.get(
           `${process.env.REACT_APP_BACKEND_URL}/services/${selectedService}/price`,
         );
-        setServicePrice(response.data.price);
+        setServicePrice(price.data.price);
+        const name = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}/services/${selectedService}/name`,
+        );
+        setServiceName(name.data.name);
+        const fullProducer = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}/producer/${selectedProducer}`,
+        );
+        console.log(fullProducer);
+        setproducerName(fullProducer.data.username);
+        setProducerEmail(fullProducer.data.email);
         setLoadingDetails(false);
         setNext(next + 1);
       } catch (error) {
         setLoadingDetails(false);
-        console.error("Error al obtener el precio del servicio:", error);
-        setError("Error al obtener el precio del servicio");
+        console.error("Error al obtener los detalles de la reserva", error);
+        setError("Error al obtener los detalles de la reserva");
       }
     }
     if (page === 3) {
@@ -331,7 +343,7 @@ function Reserva() {
         onMouseMove={(e) => handleMouseMove(e, 1)}
         onMouseEnter={() => handleMouseEnter(1)}
         onMouseLeave={handleMouseLeave}
-        className="relative mb-28 flex h-fit min-w-[90%] border border-light-text bg-gradient-to-b from-light-background to-light-secondary px-8 py-8 shadow-2xl transition-all duration-500 ease-in-out md:min-w-fit dark:border-dark-secondary dark:from-dark-background dark:to-dark-secondary"
+        className="relative mb-28 flex h-fit min-w-[90%] items-center justify-center border border-light-text bg-gradient-to-b from-light-background to-light-secondary px-8 py-8 shadow-2xl transition-all duration-500 ease-in-out dark:border-dark-secondary dark:from-dark-background dark:to-dark-secondary"
       >
         <input
           aria-hidden="true"
@@ -357,7 +369,7 @@ function Reserva() {
             className="flex w-full flex-col items-center gap-5"
             onSubmit={(e) => {
               e.preventDefault();
-              handleNext(0);
+              handleNext(next);
             }}
           >
             <div>
@@ -406,7 +418,7 @@ function Reserva() {
             className="flex w-full flex-col items-center gap-5"
             onSubmit={(e) => {
               e.preventDefault();
-              handleNext();
+              handleNext(next);
             }}
           >
             <div>
@@ -460,92 +472,121 @@ function Reserva() {
           </form>
         )}
         {next === 2 && (
-          <form
-            className="flex w-full flex-col items-center gap-5"
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleNext();
-            }}
-          >
-            <div>
-              <section className="flex max-w-full justify-center">
-                <DayPicker
-                  mode="single"
-                  locale={es}
-                  classNames={{
-                    container: "flex flex-col gap-5",
-                    caption: "text-xl font-bold",
-                    body: "grid grid-cols-7 gap-2",
-                    today:
-                      "text-light-highlight dark:text-dark-highlight font-bold",
-                    selected: "bg-light-buttons dark:bg-dark-buttons",
-                    disabled: "text-gray-400",
-                    outside: "text-gray-400",
-                    footer: "font-title text-xl font-bold",
-                    chevron: " fill-light-buttons",
-                  }}
-                  required
-                  selected={selectedDate}
-                  onSelect={(date) => {
-                    setSelectedDate(date); // Store the Date object directly
-                  }}
-                  disabled={{ before: new Date() }}
-                  footer={
-                    selectedDate && !selectedHour
-                      ? `Dia: ${selectedDate.toLocaleDateString()}`
-                      : selectedDate && selectedHour
-                        ? `Dia: ${selectedDate.toLocaleDateString()} Hora: ${selectedHour}:00 - ${selectedHour + 2}:00`
-                        : "Selecciona un día."
-                  }
-                />
-              </section>
-              {selectedDate && (
-                <section className="flex flex-col">
-                  <label
-                    for="hour_select"
-                    className="font-title text-xl font-bold"
-                  >
-                    Horas disponibles
-                  </label>
-                  <select
-                    id="hour_select"
-                    name="producer"
+          <div className="flex flex-col items-center">
+            <label className="font-title text-xl font-bold">Fecha y Hora</label>
+            <form
+              className="flex h-fit w-full flex-col items-center justify-center gap-5"
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleNext(next);
+              }}
+            >
+              <div className="flex flex-col lg:flex-row items-center justify-center gap-5">
+                <section className="flex max-w-full items-center justify-center">
+                  <DayPicker
+                    mode="single"
+                    locale={es}
+                    classNames={{
+                      container: "flex flex-col gap-5",
+                      caption: "text-xl font-bold",
+                      body: "grid grid-cols-7 gap-2",
+                      today:
+                        "text-light-highlight dark:text-dark-highlight font-bold",
+                      selected: "bg-light-buttons dark:bg-dark-buttons",
+                      disabled: "text-gray-400",
+                      outside: "text-gray-400",
+                      footer: "font-title text-xl font-bold",
+                      chevron: " fill-light-buttons",
+                    }}
                     required
-                    className="w-[322px] bg-light-background p-2 dark:bg-dark-background"
-                    onChange={(e) => setSelectedHour(Number(e.target.value))}
-                  >
-                    {allHours.map((hour) => (
-                      <option
-                        key={hour}
-                        value={hour}
-                        disabled={!freeHours.includes(hour)}
-                        className="text-light-text disabled:font-bold disabled:text-gray-600 dark:text-dark-text"
-                      >
-                        {hour}:00 - {hour + 2}:00
-                        {!freeHours.includes(hour) && " (No disponible) "}
-                      </option>
-                    ))}
-                  </select>
+                    selected={selectedDate}
+                    onSelect={(date) => {
+                      setSelectedDate(date); // Store the Date object directly
+                    }}
+                    disabled={{ before: new Date() }}
+                  />
                 </section>
-              )}
-            </div>
-            <div className="flex justify-center gap-5">
-              <button
-                type="button"
-                onClick={handleBack}
-                className="bg-light-secondary px-2 py-1 dark:bg-dark-secondary"
-              >
-                Volver
-              </button>
+                <div className="h-fit">
+                  {selectedDate && (
+                    <section className="mb-[1em] flex flex-col self-start">
+                      {allHours.length === 0 ? (
+                        <p>
+                          No quedan horas disponibles para el día seleccionado
+                        </p>
+                      ) : (
+                        <ul className="grid grid-cols-2 gap-5">
+                          {allHours.map((hour) => {
+                            const isAvailable = freeHours.includes(hour);
+                            return (
+                              <li className="flex items-center justify-center text-center">
+                                <input
+                                  type="radio"
+                                  name="hora"
+                                  className="peer hidden"
+                                  id={hour}
+                                  disabled={!isAvailable}
+                                  onChange={() =>
+                                    isAvailable && setSelectedHour(hour)
+                                  }
+                                />
+                                <label
+                                  htmlFor={hour}
+                                  className={`w-full cursor-pointer px-2 py-1 ${
+                                    isAvailable
+                                      ? "bg-light-secondary peer-checked:bg-light-buttons dark:bg-dark-secondary dark:peer-checked:bg-dark-buttons"
+                                      : "cursor-not-allowed bg-gray-300 opacity-50 dark:bg-gray-700"
+                                  }`}
+                                >
+                                  {hour}:00 - {hour + 2}:00
+                                </label>
+                              </li>
+                            );
+                          })}
 
-              <button
-                type="submit"
-                className="bg-light-buttons px-2 py-1 dark:bg-dark-buttons"
-              >
-                Siguiente
-              </button>
-            </div>
-          </form>
+                          {/* {allHours.map((hour) => {
+                            const isAvailable = freeHours.includes(hour);
+                            return (
+                              <button
+                                key={hour}
+                                className={`border px-2 py-1 transition-transform duration-300 ${
+                                  isAvailable
+                                    ? "border-light-buttons bg-light-secondary hover:scale-105 dark:bg-dark-secondary"
+                                    : "cursor-not-allowed border-gray-400 bg-gray-300 opacity-50 dark:bg-gray-700"
+                                }`}
+                                value={hour}
+                                onClick={(e) =>
+                                  isAvailable && setSelectedHour(e.target.value)
+                                }
+                                disabled={!isAvailable}
+                              >
+                                {hour}:00 - {hour + 2}:00
+                              </button>
+                            );
+                          })} */}
+                        </ul>
+                      )}
+                    </section>
+                  )}
+                </div>
+              </div>
+              <div className="flex h-fit justify-center gap-5">
+                <button
+                  type="button"
+                  onClick={handleBack}
+                  className="bg-light-secondary px-2 py-1 dark:bg-dark-secondary"
+                >
+                  Volver
+                </button>
+
+                <button
+                  type="submit"
+                  className="bg-light-buttons px-2 py-1 dark:bg-dark-buttons"
+                >
+                  Siguiente
+                </button>
+              </div>
+            </form>
+          </div>
         )}
         {next === 3 && (
           <>
@@ -556,36 +597,48 @@ function Reserva() {
                 </div>
               </div>
             )}
-            <div className="flex-col">
-              <div className="flex flex-col items-center">
-                <h2 className="text-center font-title text-3xl font-bold text-light-highlight dark:text-dark-highlight">
-                  Resumen de la reserva
+            <div className="w-full flex-col">
+              <div className="flex w-full flex-col items-center">
+                <h2 className="mb-[1em] w-60 flex-wrap text-center font-title text-3xl font-bold text-light-highlight md:w-full dark:text-dark-highlight">
+                  Resumen de la Reserva
                 </h2>
                 <div className="flex flex-col gap-5">
-                  <div className="flex flex-col gap-5">
-                    <p className="text-light-text dark:text-dark-text">
-                      Productor:{" "}
-                      <span className="font-bold">{selectedProducer}</span>
-                    </p>
-                    <p className="text-light-text dark:text-dark-text">
-                      Servicio:{" "}
-                      <span className="font-bold">{selectedService}</span>
-                    </p>
-                    <p className="text-light-text dark:text-dark-text">
-                      Fecha:{" "}
-                      <span className="font-bold">
+                  <div className="grid grid-cols-2 gap-5">
+                    <div className="text-center">
+                      <p className="text-light-text dark:text-dark-text">
+                        Productor
+                      </p>
+                      <p className="font-bold">{producerName}</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-light-text dark:text-dark-text">
+                        Servicio
+                      </p>
+                      <p className="font-bold">{serviceName}</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-light-text dark:text-dark-text">
+                        Fecha
+                      </p>
+                      <p className="font-bold">
                         {selectedDate.toLocaleDateString()}
-                      </span>
-                    </p>
-                    <p className="text-light-text dark:text-dark-text">
-                      Hora:{" "}
-                      <span className="font-bold">
+                      </p>
+                    </div>
+
+                    <div className="text-center">
+                      <p className="text-light-text dark:text-dark-text">
+                        Hora
+                      </p>
+                      <p className="font-bold">
                         {selectedHour}:00 - {selectedHour + 2}:00
-                      </span>
-                    </p>
-                    <p className="text-light-text dark:text-dark-text">
-                      Precio: <span className="font-bold">{servicePrice}€</span>
-                    </p>
+                      </p>
+                    </div>
+                    <div className="col-span-2 text-center">
+                      <p className="text-light-text dark:text-dark-text">
+                        Precio
+                      </p>
+                      <p className="font-bold">{servicePrice}€</p>
+                    </div>
                   </div>
                 </div>
               </div>

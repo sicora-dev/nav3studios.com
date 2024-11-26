@@ -1,6 +1,6 @@
 import React, { useState, useEffect, memo } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import 'react-lazy-load-image-component/src/effects/opacity.css';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 import "../styles/galeria.css"; // Importa el archivo CSS
 
 const LazyLoadLocal = memo(function LazyLoadLocal() {
@@ -25,9 +25,10 @@ const LazyLoadLocal = memo(function LazyLoadLocal() {
           height={400}
           alt={`Foto del estudio ${index + 1}`}
           className="mx-auto mb-[1em]"
-          delayMethod="throttle"
-          threshold={500}
-          effect="opacity"
+          delayMethod="debounce"
+          delayTime={500}
+          threshold={100}
+          effect="blur"
           beforeLoad={() => {
             document.querySelectorAll('.lazy-load-image-background').forEach(el => {
               el.style.display = 'block';

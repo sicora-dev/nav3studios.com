@@ -1,6 +1,8 @@
 import React, { useState, useEffect, memo } from "react";
 import { LoadScript, GoogleMap } from "@react-google-maps/api";
 
+const libraries = ["marker"];
+
 const MapComponent = memo(function MapComponent() {
   const [map, setMap] = useState(null);
   const [marker, setMarker] = useState(null);
@@ -119,7 +121,7 @@ const MapComponent = memo(function MapComponent() {
       <LoadScript
         googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
         onLoad={handleLoaded}
-        libraries={["marker"]}
+        libraries={libraries}
       >
         {isLoaded && (
           <GoogleMap

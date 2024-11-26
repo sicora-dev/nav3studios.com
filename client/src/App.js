@@ -52,9 +52,9 @@ function App() {
             currency: "EUR",
           }}
         >
-          <div className="flex h-screen">
+          <div className="flex overflow-x-hidden h-screen">
             <Navbar />
-            <div className="flex-1 overflow-auto md:ml-80">
+            <div className="flex-1 md:ml-80">
               <Suspense fallback={<LoadingSpinner />}>
                 <Routes>
                   <Route path="/information" element={<Info />} />
