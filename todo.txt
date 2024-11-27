@@ -3,3 +3,9 @@ verificacion de email en reservas (en reservas podria hacer una doble confirmaci
 que solo se puedan escoger horas mas haya del dia de hoy, por ejemplo el 12 de noviembre a las 15:00 solo se podran coger horas a partir del 13 de noviembre a las 15:00
 
 success payment bien
+
+redondear toda la pagina rounded-md
+en reserva, el handleNext tiene que comprobar la pagina para comprobar si ha seleccionado algo o no
+en reserva en handleBack tiene que comprobar la pagina para setear a null lo que corresponda (si viene de la pagina 1 a la 0, debe setear a null el productor)
+
+barra de steps en reserva

@@ -9,27 +9,63 @@ import { PayPalButtons } from "@paypal/react-paypal-js";
 import { set } from "date-fns";
 import LoadingSpinner from "../components/LoadingSpinner";
 
+const yesterday = new Date();
+yesterday.setDate(yesterday.getDate() - 1);
+
+const tomorrow = new Date();
+tomorrow.setDate(tomorrow.getDate() + 1);
+
 function Reserva() {
   const [user, setUser] = useState([]);
-  const [services, setServices] = useState([]);
-  const [producers, setProducers] = useState([]);
+  const [services, setServices] = useState([
+    {
+      id: "1",
+      name: "Grabación",
+      price: "30.00",
+    },
+    {
+      id: "2",
+      name: "Mezcla y master",
+      price: "45.00",
+    },
+    {
+      id: "3",
+      name: "Beat",
+      price: "35.00",
+    },
+    {
+      id: "4",
+      name: "Sesión completa",
+      price: "85.00",
+    },
+  ]);
+  const [producers, setProducers] = useState([
+    {
+      id: 1,
+      username: "Najerax",
+    },
+    {
+      id: 2,
+      username: "Roux",
+    },
+  ]);
   const [freeHours, setFreeHours] = useState([]);
 
-  const [selectedProducer, setSelectedProducer] = useState(1);
+  const [selectedProducer, setSelectedProducer] = useState();
   const [producerName, setproducerName] = useState("");
   const [producerEmail, setProducerEmail] = useState("");
-  const [selectedService, setSelectedService] = useState(1);
+  const [selectedService, setSelectedService] = useState();
   const [serviceName, setServiceName] = useState();
   const [servicePrice, setServicePrice] = useState(0);
-  const [selectedHour, setSelectedHour] = useState(9);
+  const [selectedHour, setSelectedHour] = useState();
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [bookingDate, setBookingDate] = useState();
-  const [paymentMethod, setPaymentMethod] = useState(-1);
+  const [paymentMethod, setPaymentMethod] = useState();
 
   const [isPayPalReady, setIsPayPalReady] = useState(false);
   const [paymentError, setPaymentError] = useState("");
 
-  const [next, setNext] = useState(3);
+  const [next, setNext] = useState(0);
   const [bookingCreated, setBookingCreated] = useState(null);
   const [activeDiv, setActiveDiv] = useState(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -37,6 +73,7 @@ function Reserva() {
   const [mode, setMode] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [loadingDetails, setLoadingDetails] = useState(false);
+  const [loadingHours, setLoadingHours] = useState(true);
   const [error, setError] = useState("");
   const defaultClassNames = getDefaultClassNames();
   const allHours = [9, 11, 13, 15, 17, 19];
@@ -45,25 +82,25 @@ function Reserva() {
 
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const checkAuth = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         `${process.env.REACT_APP_BACKEND_URL}/check-auth`,
-  //         {
-  //           withCredentials: true,
-  //         },
-  //       );
-  //       if (response.status !== 200) {
-  //         throw new Error("Not authenticated");
-  //       }
-  //     } catch (error) {
-  //       navigate("/login", { state: { fromReserva: true } });
-  //       setError("Debes iniciar sesión para hacer una reserva");
-  //     }
-  //   };
-  //   checkAuth();
-  // }, [navigate]);
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}/check-auth`,
+          {
+            withCredentials: true,
+          },
+        );
+        if (response.status !== 200) {
+          throw new Error("Not authenticated");
+        }
+      } catch (error) {
+        navigate("/login", { state: { fromReserva: true } });
+        setError("Debes iniciar sesión para hacer una reserva");
+      }
+    };
+    checkAuth();
+  }, [navigate]);
 
   useEffect(() => {
     const month = (selectedDate.getMonth() + 1).toString().padStart(2, "0");
@@ -77,10 +114,12 @@ function Reserva() {
     () =>
       debounce(async (date) => {
         // Agregar validación de cache expirado
+        setLoadingHours(true);
         const cacheExpiry = 5 * 60 * 1000; // 5 minutos
         const cacheEntry = dateCache[date];
 
         if (cacheEntry && Date.now() - cacheEntry.timestamp < cacheExpiry) {
+          setLoadingHours(false);
           setFreeHours(cacheEntry.hours);
           return;
         }
@@ -99,9 +138,10 @@ function Reserva() {
               timestamp: Date.now(),
             },
           }));
-
           setFreeHours(newHours);
+          setLoadingHours(false);
         } catch (error) {
+          setLoadingHours(false);
           console.error("Failed to fetch free hours:", error);
         }
       }, 500),
@@ -280,10 +320,28 @@ function Reserva() {
     }
   };
 
-  const handleBack = async () => {
-    setPaymentMethod(1);
-    if (next < 1) return;
-    setNext(next - 1);
+  const handleBack = async (page) => {
+    setPaymentMethod(null);
+    setPaymentError("");
+    setError(null);
+    if (page <= 0) return;
+    if (page === 1) {
+      setSelectedProducer(null);
+      setNext(next - 1);
+      return;
+    }
+    if (page === 2) {
+      setSelectedService(null);
+      setNext(next - 1);
+      return;
+    }
+
+    if (page === 3) {
+      setSelectedDate(new Date());
+      setSelectedHour(null);
+      setNext(next - 1);
+      return;
+    }
   };
 
   const handlePaymentMethod = (e) => {
@@ -293,13 +351,30 @@ function Reserva() {
   };
   const handleNext = async (page) => {
     if (page < 0 || page > 3) return;
-    if (page !== 2) {
+
+    if (page === 0) {
+      if (!selectedProducer) {
+        setError("Por favor, selecciona un productor");
+        return;
+      }
+      setError(null);
       setNext(next + 1);
-      return;
+    }
+    if (page === 1) {
+      if (!selectedService) {
+        setError("Por favor, selecciona un servicio");
+        return;
+      }
+      setError(null);
+      setNext(next + 1);
     }
 
     if (page === 2) {
       setLoadingDetails(true);
+      if (!selectedDate || !selectedHour) {
+        setError("Por favor, selecciona una fecha y hora");
+        return;
+      }
       try {
         const price = await axios.get(
           `${process.env.REACT_APP_BACKEND_URL}/services/${selectedService}/price`,
@@ -343,11 +418,11 @@ function Reserva() {
         onMouseMove={(e) => handleMouseMove(e, 1)}
         onMouseEnter={() => handleMouseEnter(1)}
         onMouseLeave={handleMouseLeave}
-        className="relative mb-28 flex h-fit min-w-[90%] items-center justify-center border border-light-text bg-gradient-to-b from-light-background to-light-secondary px-8 py-8 shadow-2xl transition-all duration-500 ease-in-out dark:border-dark-secondary dark:from-dark-background dark:to-dark-secondary"
+        className="relative mb-28 flex h-fit min-w-[70%] items-center justify-center rounded-md border border-light-text bg-gradient-to-b from-light-background to-light-secondary px-8 py-8 shadow-2xl transition-all duration-500 ease-in-out lg:min-w-[40%] dark:border-dark-secondary dark:from-dark-background dark:to-dark-secondary"
       >
         <input
           aria-hidden="true"
-          className="pointer-events-none absolute left-0 top-0 z-10 h-full w-full cursor-default border-2 border-[#eb5e28]/50 transition-opacity duration-500 placeholder:select-none"
+          className="pointer-events-none absolute left-0 top-0 z-10 h-full w-full cursor-default rounded-md border-2 border-[#eb5e28]/50 transition-opacity duration-500 placeholder:select-none"
           style={{
             opacity: activeDiv === 1 ? opacity : 0,
             WebkitMaskImage: `radial-gradient(30% 30px at ${position.x}px ${position.y}px, black 45%, transparent)`,
@@ -374,29 +449,43 @@ function Reserva() {
           >
             <div>
               <section className="flex flex-col">
-                <label
-                  for="producer_select"
-                  className="font-title text-xl font-bold"
-                >
+                <label className="mb-[1em] text-center font-title text-2xl font-bold">
                   Productor
                 </label>
-                <select
-                  id="producer_select"
-                  name="producer"
-                  required
-                  className="w-[322px] bg-light-background p-2 dark:bg-dark-background"
-                  onChange={(e) => setSelectedProducer(e.target.value)}
-                >
+
+                <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                   {producers.map((producer) => (
-                    <option
-                      key={producer.id}
-                      value={producer.id}
-                      className="text-light-text dark:text-dark-text"
-                    >
-                      {producer.username}
-                    </option>
+                    <li className="flex items-center justify-center text-center">
+                      <input
+                        type="radio"
+                        name="producer"
+                        className="peer hidden"
+                        id={producer.id}
+                        onChange={() => setSelectedProducer(producer.id)}
+                      />
+                      <label
+                        htmlFor={producer.id}
+                        className="group/item cursor-pointer peer-checked:text-light-buttons"
+                      >
+                        <img
+                          className="w-28 rounded-md"
+                          alt={producer.id}
+                          src={`/assets/producer_${producer.username}.webp`}
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = "/assets/producer_Najerax.webp";
+                          }}
+                        ></img>
+                        <p className="group text-center text-lg font-bold">
+                          <span className="relative">
+                            {producer.username}
+                            <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-light-buttons transition-all duration-300 ease-in-out group-hover/item:w-full peer-checked:w-full dark:bg-dark-buttons"></span>
+                          </span>
+                        </p>
+                      </label>
+                    </li>
                   ))}
-                </select>
+                </ul>
               </section>
             </div>
 
@@ -407,7 +496,7 @@ function Reserva() {
             )}
             <button
               type="submit"
-              className="bg-light-buttons px-2 py-1 dark:bg-dark-buttons"
+              className="rounded-md bg-light-buttons px-2 py-1 dark:bg-dark-buttons"
             >
               Siguiente
             </button>
@@ -425,27 +514,46 @@ function Reserva() {
               <section className="flex flex-col">
                 <label
                   for="service_select"
-                  className="font-title text-xl font-bold"
+                  className="mb-[1em] text-center font-title text-2xl font-bold"
                 >
                   Servicio
                 </label>
-                <select
-                  id="service_select"
-                  name="service"
-                  required
-                  className="w-[322px] bg-light-background p-2 dark:bg-dark-background"
-                  onChange={(e) => setSelectedService(e.target.value)}
-                >
+
+                <ul className="grid grid-cols-1 gap-5 md:grid-cols-2">
                   {services.map((service) => (
-                    <option
+                    <li
+                      className="group/service flex items-center justify-center text-center"
                       key={service.id}
-                      value={service.id}
-                      className="text-light-text dark:text-dark-text"
                     >
-                      {service.name}
-                    </option>
+                      <input
+                        type="radio"
+                        name="service"
+                        className="peer hidden"
+                        id={service.id}
+                        onChange={() => {
+                          console.log(service.id);
+                          setSelectedService(service.id);
+                        }}
+                      />
+                      <label
+                        htmlFor={service.id}
+                        className={`group/item w-full cursor-pointer px-2 py-1 peer-checked:text-light-buttons`}
+                      >
+                        <p className="group flex flex-col items-center justify-center rounded-md bg-light-secondary px-2 py-1 text-center text-lg font-bold dark:bg-dark-secondary">
+                          <img
+                            className="w-10 transition-all duration-300 [&>path]:stroke-current group-hover/service:[&>path]:stroke-[#EB5E28]"
+                            alt={service.name}
+                            src={`/assets/${service.id}.svg`}
+                          ></img>
+                          <span className="relative">
+                            {service.name}
+                            <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-light-buttons transition-all duration-300 ease-in-out group-hover/item:w-full peer-checked:w-full dark:bg-dark-buttons"></span>
+                          </span>
+                        </p>
+                      </label>
+                    </li>
                   ))}
-                </select>
+                </ul>
               </section>
             </div>
             {error && (
@@ -456,7 +564,10 @@ function Reserva() {
             <div className="flex justify-center gap-5">
               <button
                 type="button"
-                onClick={handleBack}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleBack(next);
+                }}
                 className="bg-light-secondary px-2 py-1 dark:bg-dark-secondary"
               >
                 Volver
@@ -473,7 +584,9 @@ function Reserva() {
         )}
         {next === 2 && (
           <div className="flex flex-col items-center">
-            <label className="font-title text-xl font-bold">Fecha y Hora</label>
+            <label className="mb-[1em] text-center font-title text-2xl font-bold">
+              Fecha y Hora
+            </label>
             <form
               className="flex h-fit w-full flex-col items-center justify-center gap-5"
               onSubmit={(e) => {
@@ -481,17 +594,18 @@ function Reserva() {
                 handleNext(next);
               }}
             >
-              <div className="flex flex-col lg:flex-row items-center justify-center gap-5">
+              <div className="flex flex-col items-center justify-center gap-5 lg:flex-row">
                 <section className="flex max-w-full items-center justify-center">
                   <DayPicker
                     mode="single"
                     locale={es}
                     classNames={{
                       container: "flex flex-col gap-5",
+                      month_caption: "text-xl font-bold ",
                       caption: "text-xl font-bold",
                       body: "grid grid-cols-7 gap-2",
-                      today:
-                        "text-light-highlight dark:text-dark-highlight font-bold",
+                      day: "font-bold",
+                      today: "text-gray-400",
                       selected: "bg-light-buttons dark:bg-dark-buttons",
                       disabled: "text-gray-400",
                       outside: "text-gray-400",
@@ -503,12 +617,21 @@ function Reserva() {
                     onSelect={(date) => {
                       setSelectedDate(date); // Store the Date object directly
                     }}
-                    disabled={{ before: new Date() }}
+                    disabled={{
+                      before: tomorrow, // This disables today and all past dates
+                    }}
                   />
                 </section>
                 <div className="h-fit">
                   {selectedDate && (
-                    <section className="mb-[1em] flex flex-col self-start">
+                    <section className="relative mb-[1em] flex flex-col self-start">
+                      {loadingHours && (
+                        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50">
+                          <div className="relative flex w-full flex-col items-center justify-center gap-4">
+                            <LoadingSpinner />
+                          </div>
+                        </div>
+                      )}
                       {allHours.length === 0 ? (
                         <p>
                           No quedan horas disponibles para el día seleccionado
@@ -531,7 +654,7 @@ function Reserva() {
                                 />
                                 <label
                                   htmlFor={hour}
-                                  className={`w-full cursor-pointer px-2 py-1 ${
+                                  className={`w-full cursor-pointer rounded-md px-2 py-1 ${
                                     isAvailable
                                       ? "bg-light-secondary peer-checked:bg-light-buttons dark:bg-dark-secondary dark:peer-checked:bg-dark-buttons"
                                       : "cursor-not-allowed bg-gray-300 opacity-50 dark:bg-gray-700"
@@ -542,37 +665,24 @@ function Reserva() {
                               </li>
                             );
                           })}
-
-                          {/* {allHours.map((hour) => {
-                            const isAvailable = freeHours.includes(hour);
-                            return (
-                              <button
-                                key={hour}
-                                className={`border px-2 py-1 transition-transform duration-300 ${
-                                  isAvailable
-                                    ? "border-light-buttons bg-light-secondary hover:scale-105 dark:bg-dark-secondary"
-                                    : "cursor-not-allowed border-gray-400 bg-gray-300 opacity-50 dark:bg-gray-700"
-                                }`}
-                                value={hour}
-                                onClick={(e) =>
-                                  isAvailable && setSelectedHour(e.target.value)
-                                }
-                                disabled={!isAvailable}
-                              >
-                                {hour}:00 - {hour + 2}:00
-                              </button>
-                            );
-                          })} */}
                         </ul>
                       )}
                     </section>
                   )}
                 </div>
               </div>
+              {error && (
+                <p className="w-full text-center font-title text-sm font-bold text-red-700">
+                  {error}
+                </p>
+              )}
               <div className="flex h-fit justify-center gap-5">
                 <button
                   type="button"
-                  onClick={handleBack}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleBack(next);
+                  }}
                   className="bg-light-secondary px-2 py-1 dark:bg-dark-secondary"
                 >
                   Volver
@@ -599,7 +709,7 @@ function Reserva() {
             )}
             <div className="w-full flex-col">
               <div className="flex w-full flex-col items-center">
-                <h2 className="mb-[1em] w-60 flex-wrap text-center font-title text-3xl font-bold text-light-highlight md:w-full dark:text-dark-highlight">
+                <h2 className="mb-[1em] w-60 flex-wrap text-center font-title text-2xl font-bold text-light-highlight md:w-full dark:text-dark-highlight">
                   Resumen de la Reserva
                 </h2>
                 <div className="flex flex-col gap-5">
@@ -705,7 +815,10 @@ function Reserva() {
                     <div className="flex justify-center">
                       <button
                         type="button"
-                        onClick={handleBack}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleBack(next);
+                        }}
                         className="bg-light-secondary px-2 py-1 dark:bg-dark-secondary"
                       >
                         Volver
@@ -720,7 +833,10 @@ function Reserva() {
                   <div className="flex justify-center gap-5">
                     <button
                       type="button"
-                      onClick={handleBack}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleBack(next);
+                      }}
                       className="bg-light-secondary px-2 py-1 dark:bg-dark-secondary"
                     >
                       Volver
@@ -734,11 +850,14 @@ function Reserva() {
                     </button>
                   </div>
                 )}
-                {paymentMethod === -1 && (
+                {!paymentMethod && (
                   <div className="flex justify-center gap-5">
                     <button
                       type="button"
-                      onClick={handleBack}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleBack(next);
+                      }}
                       className="bg-light-secondary px-2 py-1 dark:bg-dark-secondary"
                     >
                       Volver
