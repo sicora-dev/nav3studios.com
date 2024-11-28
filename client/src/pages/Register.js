@@ -105,11 +105,11 @@ function Register() {
         onMouseMove={(e) => handleMouseMove(e, 1)}
         onMouseEnter={() => handleMouseEnter(1)}
         onMouseLeave={handleMouseLeave}
-        className="relative flex h-fit min-w-[90%] overflow-hidden border border-light-text bg-gradient-to-b from-light-background to-light-secondary px-8 py-8 shadow-2xl transition-all duration-500 ease-in-out dark:border-dark-secondary dark:from-dark-background dark:to-dark-secondary md:min-w-fit"
+        className="relative flex h-fit min-w-[90%] overflow-hidden rounded-md border border-light-text bg-gradient-to-b from-light-background to-light-secondary px-8 py-8 shadow-2xl transition-all duration-500 ease-in-out md:min-w-fit dark:border-dark-secondary dark:from-dark-background dark:to-dark-secondary"
       >
         <input
           aria-hidden="true"
-          className="pointer-events-none absolute left-0 top-0 z-10 h-full w-full cursor-default border-2 border-[#eb5e28]/50 transition-opacity duration-500 placeholder:select-none"
+          className="pointer-events-none absolute left-0 top-0 z-10 h-full w-full cursor-default rounded-md border-2 border-[#eb5e28]/50 transition-opacity duration-500 placeholder:select-none"
           style={{
             opacity: activeDiv === 1 ? opacity : 0,
             WebkitMaskImage: `radial-gradient(30% 30px at ${position.x}px ${position.y}px, black 45%, transparent)`,
@@ -153,7 +153,7 @@ function Register() {
               type="email"
               id="email"
               required
-              className="input-box block w-full border border-light-secondary bg-light-background p-2.5 ps-10 text-sm text-light-text outline-none focus:border-light-highlight focus:ring-light-highlight dark:border-dark-secondary dark:bg-dark-background dark:text-dark-text dark:placeholder-dark-text dark:focus:border-dark-buttons dark:focus:ring-dark-buttons"
+              className="input-box block w-full rounded-md border border-light-secondary bg-light-background p-2.5 ps-10 text-sm text-light-text outline-none focus:border-light-highlight focus:ring-light-highlight dark:border-dark-secondary dark:bg-dark-background dark:text-dark-text dark:placeholder-dark-text dark:focus:border-dark-buttons dark:focus:ring-dark-buttons"
               placeholder="Correo electrónico"
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -180,7 +180,7 @@ function Register() {
               type="password"
               id="pasword"
               required
-              className="input-box block w-full border border-light-secondary bg-light-background p-2.5 ps-10 text-sm text-light-text outline-none focus:border-light-highlight focus:ring-light-highlight dark:border-dark-secondary dark:bg-dark-background dark:text-dark-text dark:placeholder-dark-text dark:focus:border-dark-buttons dark:focus:ring-dark-buttons"
+              className="input-box block w-full rounded-md border border-light-secondary bg-light-background p-2.5 ps-10 text-sm text-light-text outline-none focus:border-light-highlight focus:ring-light-highlight dark:border-dark-secondary dark:bg-dark-background dark:text-dark-text dark:placeholder-dark-text dark:focus:border-dark-buttons dark:focus:ring-dark-buttons"
               placeholder="Contraseña"
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -207,7 +207,7 @@ function Register() {
               type="password"
               id="pasword2"
               required
-              className="input-box block w-full border border-light-secondary bg-light-background p-2.5 ps-10 text-sm text-light-text outline-none focus:border-light-highlight focus:ring-light-highlight dark:border-dark-secondary dark:bg-dark-background dark:text-dark-text dark:placeholder-dark-text dark:focus:border-dark-buttons dark:focus:ring-dark-buttons"
+              className="input-box block w-full rounded-md border border-light-secondary bg-light-background p-2.5 ps-10 text-sm text-light-text outline-none focus:border-light-highlight focus:ring-light-highlight dark:border-dark-secondary dark:bg-dark-background dark:text-dark-text dark:placeholder-dark-text dark:focus:border-dark-buttons dark:focus:ring-dark-buttons"
               placeholder="Confirmar contraseña"
               onChange={(e) => setPassword2(e.target.value)}
             />
@@ -234,7 +234,7 @@ function Register() {
               type="text"
               id="username"
               required
-              className="input-box block w-full border border-light-secondary bg-light-background p-2.5 ps-10 text-sm text-light-text outline-none focus:border-light-highlight focus:ring-light-highlight dark:border-dark-secondary dark:bg-dark-background dark:text-dark-text dark:placeholder-dark-text dark:focus:border-dark-buttons dark:focus:ring-dark-buttons"
+              className="input-box block w-full rounded-md border border-light-secondary bg-light-background p-2.5 ps-10 text-sm text-light-text outline-none focus:border-light-highlight focus:ring-light-highlight dark:border-dark-secondary dark:bg-dark-background dark:text-dark-text dark:placeholder-dark-text dark:focus:border-dark-buttons dark:focus:ring-dark-buttons"
               placeholder="Nombre de usuario"
               onChange={(e) => setUsername(e.target.value)}
             />
@@ -242,34 +242,29 @@ function Register() {
           <div className="flex w-fit gap-2">
             <button
               type="submit"
-              className="bg-light-buttons px-2 py-1 dark:bg-dark-buttons"
+              className="rounded-md bg-light-buttons px-2 py-1 dark:bg-dark-buttons"
             >
               Registrarse
             </button>
             <NavLink to="/login">
-              <button className="bg-light-secondary px-2 py-1 dark:bg-dark-secondary">
+              <button className="rounded-md bg-light-secondary px-2 py-1 dark:bg-dark-secondary">
                 Iniciar Sesión
               </button>
             </NavLink>
           </div>
         </form>
         {registering && (
-          <div
-            className="absolute inset-0 z-50 flex items-center justify-center bg-black/50"
-          >
-            <div
-              className="relative flex flex-col items-center justify-center gap-4 w-full"
-              
-            >
-              <div class="p-5 text-center absolute">
-              <div class="mx-auto h-16 w-16 animate-spin rounded-full border-4 border-dashed border-light-buttons"></div>
-              <h2 class="mt-4 text-light-text dark:text-dark-text">
-                Cargando...
-              </h2>
-              <p class="text-zinc-600 w-full dark:text-zinc-400">
-                Registando usuario en la base de datos...
-              </p>
-            </div>
+          <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50">
+            <div className="relative flex w-full flex-col items-center justify-center gap-4">
+              <div class="absolute p-5 text-center">
+                <div class="mx-auto h-16 w-16 animate-spin rounded-full border-4 border-dashed border-light-buttons"></div>
+                <h2 class="mt-4 text-light-text dark:text-dark-text">
+                  Cargando...
+                </h2>
+                <p class="w-full text-zinc-600 dark:text-zinc-400">
+                  Registando usuario en la base de datos...
+                </p>
+              </div>
             </div>
           </div>
         )}

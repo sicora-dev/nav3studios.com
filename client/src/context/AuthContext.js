@@ -1,6 +1,6 @@
 // /src/context/AuthContext.js
-import { createContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import { createContext, useState, useEffect } from "react";
+import axios from "axios";
 
 const AuthContext = createContext();
 
@@ -14,7 +14,7 @@ export function AuthProvider({ children }) {
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_BACKEND_URL}/check-auth`,
-        { withCredentials: true }
+        { withCredentials: true },
       );
       setIsAuthenticated(response.status === 200);
       setUser(response.data.user);

@@ -149,8 +149,50 @@ const sendPasswordResetEmail = async (email, resetToken) => {
   return transporter.sendMail(mailOptions);
 };
 
+const sendNewBookingEmail = async (booking, producerEmail, serviceName) => {
+  try {
+    const mailOptions = {
+      from: '"NAV3 Studios" <nav3studios@nav3studios.com>',
+      to: producerEmail,
+      subject: "Nueva reserva en NAV3 Studios",
+      html: `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+      <h1 style="color: #EB5E28;">!Enhorabuena, tienes una nueva reserva¡</h1>
+      <p>Detalles de la reserva:</p>
+      <p>Servicio: ${serviceName}</p>
+      <p>Fecha: ${booking.booking_date}</p>
+      <p>Id de reserva: ${booking.id}</p>
+      <p>Para aceptar o rechazar la reserva, haz click en el siguiente enlace:</p>
+      <a href="${process.env.FRONTEND_URL}/account" 
+         style="background-color: #EB5E28; color: white; padding: 10px 20px; 
+         text-decoration: none; border-radius: 5px; display: inline-block;">
+        Ver reservas
+      </a>
+    </div>`,
+    };
+
+    console.log("Attempting to send email with options:", {
+      to: producerEmail,
+      date: booking.booking_date,
+      id: booking.id,
+    });
+
+    const result = await transporter.sendMail(mailOptions);
+    console.log("Email sent successfully:", result);
+    return result;
+  } catch (error) {
+    console.error("Email sending failed:", {
+      error: error.message,
+      code: error.code,
+      command: error.command,
+    });
+    throw error;
+  }
+};
+
 module.exports = {
   sendVerificationEmail,
   isValidEmail,
   sendPasswordResetEmail,
+  sendNewBookingEmail,
 };

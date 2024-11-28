@@ -154,7 +154,7 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
               <label
                 key={booking.id}
                 id={booking.id}
-                className={`group relative flex max-w-[300px] flex-col items-center justify-center gap-1 border border-solid border-light-buttons/30 bg-light-secondary px-10 text-light-text duration-300 ease-in-out dark:bg-dark-secondary ${
+                className={`group relative flex max-w-[300px] flex-col items-center justify-center gap-1 rounded-md border border-solid border-light-buttons/30 bg-light-secondary px-10 text-light-text duration-300 ease-in-out dark:bg-dark-secondary ${
                   activeBooking === booking.id ? "" : ""
                 } dark:text-dark-text dark:shadow-dark-buttons/10`}
                 htmlFor={booking.id}
@@ -196,7 +196,7 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
                       hour: "2-digit",
                       minute: "2-digit",
                       hour12: false,
-                      timeZone: "Europe/Madrid",
+                      timeZone: "UTC",
                     })}
                   </p>
                   <p>Servicio: {booking.service_id}</p>
@@ -205,7 +205,7 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
                   {producer && (
                     <div className="my-2 flex gap-2">
                       <button
-                        className="bg-light-highlight/50 px-2 py-1 dark:bg-dark-highlight/50"
+                        className="rounded-md bg-light-highlight/50 px-2 py-1 dark:bg-dark-highlight/50"
                         onClick={(e) => {
                           e.stopPropagation();
                           setCancellationError("");
@@ -222,14 +222,15 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
             ))}
             {showCancellationModal && (
               <div
-                className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50"
+                className="fixed inset-0 z-40 flex items-center justify-center rounded-md bg-black bg-opacity-50"
                 onClick={(e) => e.stopPropagation()}
               >
-                <form className="absolute top-1/4 flex flex-col items-center gap-2 bg-light-secondary p-5 dark:bg-dark-secondary">
+                <form className="absolute top-1/4 flex flex-col items-center gap-2 rounded-md bg-light-secondary p-5 dark:bg-dark-secondary">
                   <label htmlFor="cancellation_reason">
                     Motivo de cancelación
                   </label>
                   <input
+                    className="rounded-md"
                     type="text"
                     name="cancellation_reason"
                     value={cancellation_reason}
@@ -239,7 +240,7 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
                     <p className="text-red-700">{cancellationError}</p>
                   )}
                   <button
-                    className="bg-light-highlight px-2 py-1 dark:bg-dark-highlight"
+                    className="rounded-md bg-light-highlight px-2 py-1 dark:bg-dark-highlight"
                     onClick={(e) => {
                       checkCancellationReason(e);
                     }}
@@ -247,7 +248,7 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
                     Confirmar
                   </button>
                   <button
-                    className="bg-light-buttons px-2 py-1"
+                    className="rounded-md bg-light-buttons px-2 py-1"
                     onClick={() => setShowCancellationModal(false)}
                   >
                     Mantener
@@ -257,10 +258,10 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
             )}
             {showCancellationModal2 && (
               <div
-                className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50"
+                className="fixed inset-0 z-40 flex items-center justify-center rounded-md bg-black bg-opacity-50"
                 onClick={(e) => e.stopPropagation()}
               >
-                <form className="absolute top-1/4 flex flex-col items-center gap-2 bg-light-secondary p-5 dark:bg-dark-secondary">
+                <form className="absolute top-1/4 flex flex-col items-center gap-2 rounded-md bg-light-secondary p-5 dark:bg-dark-secondary">
                   <label
                     className="flex flex-col text-center"
                     htmlFor="cancellation_reason"
@@ -277,13 +278,13 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
                   <p>Motivo: {cancellation_reason}</p>
                   <div className="flex gap-5">
                     <button
-                      className="bg-light-highlight px-2 py-1 dark:bg-dark-highlight"
+                      className="rounded-md bg-light-highlight px-2 py-1 dark:bg-dark-highlight"
                       onClick={(e) => handleCancel(e)}
                     >
                       Confirmar
                     </button>
                     <button
-                      className="bg-light-buttons px-2 py-1"
+                      className="rounded-md bg-light-buttons px-2 py-1"
                       onClick={() => {
                         setShowCancellationModal2(false);
                         setShowCancellationModal(false);
@@ -312,7 +313,9 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
                   />
                 </svg>
               </button>
-              <div className="">{currentPage} / {totalPagesActive}</div>
+              <div className="">
+                {currentPage} / {totalPagesActive}
+              </div>
               <button onClick={nextPage} title="Siguiente">
                 <svg
                   className={`h-5 w-5 transition ease-in-out`}
@@ -341,7 +344,7 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
               <label
                 key={booking.id}
                 id={booking.id}
-                className={`group relative flex max-w-[300px] flex-col items-center justify-center gap-1 border border-solid border-light-buttons/30 bg-light-secondary px-10 text-light-text duration-300 ease-in-out dark:bg-dark-secondary ${
+                className={`group relative flex max-w-[300px] flex-col items-center justify-center gap-1 rounded-md border border-solid border-light-buttons/30 bg-light-secondary px-10 text-light-text duration-300 ease-in-out dark:bg-dark-secondary ${
                   activeBooking === booking.id ? "" : ""
                 } dark:text-dark-text dark:shadow-dark-buttons/10`}
                 htmlFor={booking.id}
@@ -383,7 +386,7 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
                       hour: "2-digit",
                       minute: "2-digit",
                       hour12: false,
-                      timeZone: "Europe/Madrid",
+                      timeZone: "UTC"
                     })}
                   </p>
                   <p>Servicio: {booking.service_id}</p>
@@ -392,13 +395,13 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
                   {producer && (
                     <div className="my-2 flex gap-2">
                       <button
-                        className="bg-light-buttons px-2 py-1"
+                        className="rounded-md bg-light-buttons px-2 py-1"
                         onClick={handleAccept}
                       >
                         Aceptar
                       </button>
                       <button
-                        className="bg-light-highlight/50 px-2 py-1 dark:bg-dark-highlight/50"
+                        className="rounded-md bg-light-highlight/50 px-2 py-1 dark:bg-dark-highlight/50"
                         onClick={(e) => {
                           e.stopPropagation();
                           setCancellationError("");
@@ -415,10 +418,10 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
             ))}
             {showCancellationModal && (
               <div
-                className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50"
+                className="fixed inset-0 z-40 flex items-center justify-center rounded-md bg-black bg-opacity-50"
                 onClick={(e) => e.stopPropagation()}
               >
-                <form className="absolute top-1/4 flex flex-col items-center gap-2 bg-light-secondary p-5 dark:bg-dark-secondary">
+                <form className="absolute top-1/4 flex flex-col items-center gap-2 rounded-md bg-light-secondary p-5 dark:bg-dark-secondary">
                   <label htmlFor="cancellation_reason">
                     Motivo de cancelación
                   </label>
@@ -432,7 +435,7 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
                     <p className="text-red-700">{cancellationError}</p>
                   )}
                   <button
-                    className="bg-light-highlight px-2 py-1 dark:bg-dark-highlight"
+                    className="rounded-md bg-light-highlight px-2 py-1 dark:bg-dark-highlight"
                     onClick={(e) => {
                       checkCancellationReason(e);
                     }}
@@ -440,7 +443,7 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
                     Confirmar
                   </button>
                   <button
-                    className="bg-light-buttons px-2 py-1"
+                    className="rounded-md bg-light-buttons px-2 py-1"
                     onClick={() => setShowCancellationModal(false)}
                   >
                     Mantener
@@ -450,10 +453,10 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
             )}
             {showCancellationModal2 && (
               <div
-                className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50"
+                className="fixed inset-0 z-40 flex items-center justify-center rounded-md bg-black bg-opacity-50"
                 onClick={(e) => e.stopPropagation()}
               >
-                <form className="absolute top-1/4 flex flex-col items-center gap-2 bg-light-secondary p-5 dark:bg-dark-secondary">
+                <form className="absolute top-1/4 flex flex-col items-center gap-2 rounded-md bg-light-secondary p-5 dark:bg-dark-secondary">
                   <label
                     className="flex flex-col text-center"
                     htmlFor="cancellation_reason"
@@ -470,13 +473,13 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
                   <p>Motivo: {cancellation_reason}</p>
                   <div className="flex gap-5">
                     <button
-                      className="bg-light-highlight px-2 py-1 dark:bg-dark-highlight"
+                      className="rounded-md bg-light-highlight px-2 py-1 dark:bg-dark-highlight"
                       onClick={(e) => handleCancel(e)}
                     >
                       Confirmar
                     </button>
                     <button
-                      className="bg-light-buttons px-2 py-1"
+                      className="rounded-md bg-light-buttons px-2 py-1"
                       onClick={() => {
                         setShowCancellationModal2(false);
                         setShowCancellationModal(false);
@@ -505,7 +508,9 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
                   />
                 </svg>
               </button>
-              <div className="">{currentPage} / {totalPagesPending}</div>
+              <div className="">
+                {currentPage} / {totalPagesPending}
+              </div>
               <button onClick={nextPage} title="Siguiente">
                 <svg
                   className={`h-5 w-5 transition ease-in-out`}
@@ -534,7 +539,7 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
               <label
                 key={booking.id}
                 id={booking.id}
-                className={`group relative flex max-w-[300px] flex-col items-center justify-center gap-1 border border-solid border-light-buttons/30 bg-light-secondary px-10 text-light-text duration-300 ease-in-out dark:bg-dark-secondary ${
+                className={`group relative flex max-w-[300px] flex-col items-center justify-center gap-1 rounded-md border border-solid border-light-buttons/30 bg-light-secondary px-10 text-light-text duration-300 ease-in-out dark:bg-dark-secondary ${
                   activeBooking === booking.id ? "" : ""
                 } dark:text-dark-text dark:shadow-dark-buttons/10`}
                 htmlFor={booking.id}
@@ -576,7 +581,7 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
                       hour: "2-digit",
                       minute: "2-digit",
                       hour12: false,
-                      timeZone: "Europe/Madrid",
+                      timeZone: "UTC",
                     })}
                   </p>
                   <p>Servicio: {booking.service_id}</p>
@@ -602,7 +607,9 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
                   />
                 </svg>
               </button>
-              <div className="">{currentPage} / {totalPagesHistory}</div>
+              <div className="">
+                {currentPage} / {totalPagesHistory}
+              </div>
               <button onClick={nextPage} title="Siguiente">
                 <svg
                   className={`h-5 w-5 transition ease-in-out`}
@@ -631,7 +638,7 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
               <label
                 key={booking.id}
                 id={booking.id}
-                className={`group relative flex max-w-[300px] flex-col items-center justify-center gap-1 border border-solid border-light-buttons/30 bg-light-secondary px-10 text-light-text duration-300 ease-in-out dark:bg-dark-secondary ${
+                className={`group relative flex max-w-[300px] flex-col items-center justify-center gap-1 rounded-md border border-solid border-light-buttons/30 bg-light-secondary px-10 text-light-text duration-300 ease-in-out dark:bg-dark-secondary ${
                   activeBooking === booking.id ? "" : ""
                 } dark:text-dark-text dark:shadow-dark-buttons/10`}
                 htmlFor={booking.id}
@@ -660,7 +667,7 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
                     />
                   </svg>
                 </div>
-      
+
                 <div
                   className={`min-w-[170px] overflow-hidden transition-[max-height] duration-500 ease-in-out ${activeBooking === booking.id ? "max-h-[1200px]" : "max-h-0"}`}
                 >
@@ -673,7 +680,7 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
                       hour: "2-digit",
                       minute: "2-digit",
                       hour12: false,
-                      timeZone: "Europe/Madrid",
+                      timeZone: "UTC",
                     })}
                   </p>
                   <p>Servicio: {booking.service_id}</p>
@@ -699,7 +706,9 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
                   />
                 </svg>
               </button>
-              <div className="">{currentPage} / {totalPagesCanceled}</div>
+              <div className="">
+                {currentPage} / {totalPagesCanceled}
+              </div>
               <button onClick={nextPage} title="Siguiente">
                 <svg
                   className={`h-5 w-5 transition ease-in-out`}
@@ -730,4 +739,3 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
 });
 
 export default Bookings;
-

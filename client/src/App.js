@@ -52,7 +52,7 @@ function App() {
             currency: "EUR",
           }}
         >
-          <div className="flex overflow-x-hidden h-screen">
+          <div className="flex h-screen overflow-x-hidden">
             <Navbar />
             <div className="flex-1 md:ml-80">
               <Suspense fallback={<LoadingSpinner />}>
@@ -85,8 +85,6 @@ function App() {
                 checked={isDarkMode}
                 onChange={toggleDarkMode}
                 size={30}
-                
-                
               />
             </button>
           </div>

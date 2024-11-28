@@ -27,6 +27,7 @@ const MapComponent = memo(function MapComponent() {
       transition: all 0.3s ease;
       cursor: pointer;
       position: relative;
+      border-radius: 0.375rem;
     }
 
     .marker-container:after {
@@ -61,28 +62,29 @@ const MapComponent = memo(function MapComponent() {
 
     const createMarker = async () => {
       if (!map || !window.google) return;
-  
+
       try {
-        const { AdvancedMarkerElement } = await window.google.maps.importLibrary("marker");
-  
+        const { AdvancedMarkerElement } =
+          await window.google.maps.importLibrary("marker");
+
         const markerView = document.createElement("div");
         const styleSheet = document.createElement("style");
         styleSheet.textContent = markerStyle;
         markerView.appendChild(styleSheet);
-        
+
         markerView.innerHTML += `
           <div class="marker-container">
             <span>Nav3 Studios</span>
           </div>
         `;
-  
+
         const advancedMarker = new AdvancedMarkerElement({
           map,
           position: markerPosition,
           title: "Nav3 Studios",
           content: markerView,
         });
-  
+
         setMarker(advancedMarker);
       } catch (error) {
         console.error("Error al crear el marcador:", error);
@@ -109,7 +111,7 @@ const MapComponent = memo(function MapComponent() {
   };
 
   return (
-    <div className="relative h-96 w-full">
+    <div className="relative h-96 w-full overflow-hidden rounded-md">
       {!isLoaded && (
         <img
           src="assets/mapa_nav3_onloading.webp"
@@ -132,13 +134,13 @@ const MapComponent = memo(function MapComponent() {
             mapId={process.env.REACT_APP_GOOGLE_MAPS_MAP_ID} // Add map ID here
             options={{
               mapId: process.env.REACT_APP_GOOGLE_MAPS_MAP_ID, // And here
-              disableDefaultUI: true, // Optional: disable default UI
+              disableDefaultUI: false, // Optional: disable default UI
             }}
           />
         )}
       </LoadScript>
       <button
-        className="align-center absolute bottom-1 left-1 w-fit bg-light-buttons p-3 dark:bg-dark-buttons"
+        className="align-center absolute bottom-1 left-1 w-fit rounded-md bg-light-buttons p-3 dark:bg-dark-buttons"
         onClick={handleDirectionsClick}
       >
         Cómo llegar

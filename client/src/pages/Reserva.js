@@ -18,36 +18,36 @@ tomorrow.setDate(tomorrow.getDate() + 1);
 function Reserva() {
   const [user, setUser] = useState([]);
   const [services, setServices] = useState([
-    {
-      id: "1",
-      name: "Grabación",
-      price: "30.00",
-    },
-    {
-      id: "2",
-      name: "Mezcla y master",
-      price: "45.00",
-    },
-    {
-      id: "3",
-      name: "Beat",
-      price: "35.00",
-    },
-    {
-      id: "4",
-      name: "Sesión completa",
-      price: "85.00",
-    },
+    // {
+    //   id: "1",
+    //   name: "Grabación",
+    //   price: "30.00",
+    // },
+    // {
+    //   id: "2",
+    //   name: "Mezcla y master",
+    //   price: "45.00",
+    // },
+    // {
+    //   id: "3",
+    //   name: "Beat",
+    //   price: "35.00",
+    // },
+    // {
+    //   id: "4",
+    //   name: "Sesión completa",
+    //   price: "85.00",
+    // },
   ]);
   const [producers, setProducers] = useState([
-    {
-      id: 1,
-      username: "Najerax",
-    },
-    {
-      id: 2,
-      username: "Roux",
-    },
+    // {
+    //   id: 1,
+    //   username: "Najerax",
+    // },
+    // {
+    //   id: 2,
+    //   username: "Roux",
+    // },
   ]);
   const [freeHours, setFreeHours] = useState([]);
 
@@ -299,7 +299,9 @@ function Reserva() {
           {
             userId: user,
             producerId: selectedProducer,
+            producerEmail: producerEmail,
             serviceId: selectedService,
+            serviceName: serviceName,
             booking_date: bookingDate,
             payment_method: paymentMethod,
           },
@@ -541,7 +543,7 @@ function Reserva() {
                       >
                         <p className="group flex flex-col items-center justify-center rounded-md bg-light-secondary px-2 py-1 text-center text-lg font-bold dark:bg-dark-secondary">
                           <img
-                            className="w-10 transition-all duration-300 [&>path]:stroke-current group-hover/service:[&>path]:stroke-[#EB5E28]"
+                            className="w-10 transition-all duration-300"
                             alt={service.name}
                             src={`/assets/${service.id}.svg`}
                           ></img>
@@ -568,14 +570,14 @@ function Reserva() {
                   e.preventDefault();
                   handleBack(next);
                 }}
-                className="bg-light-secondary px-2 py-1 dark:bg-dark-secondary"
+                className="rounded-md bg-light-secondary px-2 py-1 dark:bg-dark-secondary"
               >
                 Volver
               </button>
 
               <button
                 type="submit"
-                className="bg-light-buttons px-2 py-1 dark:bg-dark-buttons"
+                className="rounded-md bg-light-buttons px-2 py-1 dark:bg-dark-buttons"
               >
                 Siguiente
               </button>
@@ -606,7 +608,7 @@ function Reserva() {
                       body: "grid grid-cols-7 gap-2",
                       day: "font-bold",
                       today: "text-gray-400",
-                      selected: "bg-light-buttons dark:bg-dark-buttons",
+                      selected: "bg-light-buttons dark:bg-dark-buttons rounded-md",
                       disabled: "text-gray-400",
                       outside: "text-gray-400",
                       footer: "font-title text-xl font-bold",
@@ -615,7 +617,8 @@ function Reserva() {
                     required
                     selected={selectedDate}
                     onSelect={(date) => {
-                      setSelectedDate(date); // Store the Date object directly
+                      setSelectedDate(date);
+                      setSelectedHour(null); // Store the Date object directly
                     }}
                     disabled={{
                       before: tomorrow, // This disables today and all past dates
@@ -683,14 +686,14 @@ function Reserva() {
                     e.preventDefault();
                     handleBack(next);
                   }}
-                  className="bg-light-secondary px-2 py-1 dark:bg-dark-secondary"
+                  className="rounded-md bg-light-secondary px-2 py-1 dark:bg-dark-secondary"
                 >
                   Volver
                 </button>
 
                 <button
                   type="submit"
-                  className="bg-light-buttons px-2 py-1 dark:bg-dark-buttons"
+                  className="rounded-md bg-light-buttons px-2 py-1 dark:bg-dark-buttons"
                 >
                   Siguiente
                 </button>
@@ -773,7 +776,7 @@ function Reserva() {
                     ></input>
                     <label
                       htmlFor="cash"
-                      className="cursor-pointer bg-light-secondary px-2 py-1 shadow-[0_0.5em_0.5em_-0.4em_#EB5E28] transition ease-in-out active:translate-y-1 active:text-light-highlight active:shadow-none md:shadow-none md:hover:-translate-y-1 md:hover:text-light-highlight md:hover:shadow-[0_0.5em_0.5em_-0.4em_#EB5E28] md:peer-checked:-translate-y-1 md:peer-checked:shadow-[0_0.5em_0.5em_-0.4em_#EB5E28] dark:bg-dark-secondary active:dark:text-dark-highlight md:dark:hover:text-dark-highlight"
+                      className="cursor-pointer rounded-md bg-light-secondary px-2 py-1 shadow-[0_0.5em_0.5em_-0.4em_#EB5E28] transition ease-in-out active:translate-y-1 active:text-light-highlight active:shadow-none md:shadow-none md:hover:-translate-y-1 md:hover:text-light-highlight md:hover:shadow-[0_0.5em_0.5em_-0.4em_#EB5E28] md:peer-checked:-translate-y-1 md:peer-checked:shadow-[0_0.5em_0.5em_-0.4em_#EB5E28] dark:bg-dark-secondary active:dark:text-dark-highlight md:dark:hover:text-dark-highlight"
                       style={{ display: "inline-block" }}
                     >
                       Efectivo
@@ -792,7 +795,7 @@ function Reserva() {
                     ></input>
                     <label
                       htmlFor="online"
-                      className="cursor-pointer bg-light-secondary px-2 py-1 shadow-[0_0.5em_0.5em_-0.4em_#EB5E28] transition ease-in-out active:translate-y-1 active:text-light-highlight active:shadow-none md:shadow-none md:hover:-translate-y-1 md:hover:text-light-highlight md:hover:shadow-[0_0.5em_0.5em_-0.4em_#EB5E28] md:peer-checked:-translate-y-1 md:peer-checked:shadow-[0_0.5em_0.5em_-0.4em_#EB5E28] dark:bg-dark-secondary active:dark:text-dark-highlight md:dark:hover:text-dark-highlight"
+                      className="cursor-pointer rounded-md bg-light-secondary px-2 py-1 shadow-[0_0.5em_0.5em_-0.4em_#EB5E28] transition ease-in-out active:translate-y-1 active:text-light-highlight active:shadow-none md:shadow-none md:hover:-translate-y-1 md:hover:text-light-highlight md:hover:shadow-[0_0.5em_0.5em_-0.4em_#EB5E28] md:peer-checked:-translate-y-1 md:peer-checked:shadow-[0_0.5em_0.5em_-0.4em_#EB5E28] dark:bg-dark-secondary active:dark:text-dark-highlight md:dark:hover:text-dark-highlight"
                       style={{ display: "inline-block" }} // Asegúrate de que el label sea un elemento en línea
                     >
                       Paypal
@@ -819,7 +822,7 @@ function Reserva() {
                           e.preventDefault();
                           handleBack(next);
                         }}
-                        className="bg-light-secondary px-2 py-1 dark:bg-dark-secondary"
+                        className="rounded-md bg-light-secondary px-2 py-1 dark:bg-dark-secondary"
                       >
                         Volver
                       </button>
@@ -837,14 +840,14 @@ function Reserva() {
                         e.preventDefault();
                         handleBack(next);
                       }}
-                      className="bg-light-secondary px-2 py-1 dark:bg-dark-secondary"
+                      className="rounded-md bg-light-secondary px-2 py-1 dark:bg-dark-secondary"
                     >
                       Volver
                     </button>
 
                     <button
                       type="submit"
-                      className="bg-light-buttons px-2 py-1 dark:bg-dark-buttons"
+                      className="rounded-md bg-light-buttons px-2 py-1 dark:bg-dark-buttons"
                     >
                       Confirmar
                     </button>
@@ -858,7 +861,7 @@ function Reserva() {
                         e.preventDefault();
                         handleBack(next);
                       }}
-                      className="bg-light-secondary px-2 py-1 dark:bg-dark-secondary"
+                      className="rounded-md bg-light-secondary px-2 py-1 dark:bg-dark-secondary"
                     >
                       Volver
                     </button>

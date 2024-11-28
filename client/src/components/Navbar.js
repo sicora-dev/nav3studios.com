@@ -5,7 +5,6 @@ import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Hamburger from "hamburger-react";
 
-
 function Navbar() {
   const [isClosed, setClosed] = useState(true);
   const [loged, setLoged] = useState(false);
@@ -39,12 +38,12 @@ function Navbar() {
 
   return (
     <>
-      <div className="absolute z-50 md:hidden text-light-buttons">
+      <div className="absolute z-50 text-light-buttons md:hidden">
         <Hamburger toggled={!isClosed} onToggle={toogleMenu} />
       </div>
 
       <nav
-        className={`${isClosed ? "-translate-x-[100%] md:translate-x-0" : ""} absolute z-40 min-h-full w-80 min-w-fit content-center bg-light-secondary p-4 pl-10 transition ease-in-out dark:bg-dark-secondary md:visible md:fixed md:z-0 md:col-span-1`}
+        className={`${isClosed ? "-translate-x-[100%] md:translate-x-0" : ""} absolute z-40 min-h-full w-80 min-w-fit content-center bg-light-secondary p-4 pl-10 transition ease-in-out md:visible md:fixed md:z-0 md:col-span-1 dark:bg-dark-secondary`}
       >
         <ul className="flex h-96 flex-col justify-around space-y-5 text-2xl">
           <li className="w-fit">

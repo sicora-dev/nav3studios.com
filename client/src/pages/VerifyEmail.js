@@ -35,7 +35,7 @@ const VerifyEmail = () => {
 
   return (
     <div className="flex min-h-screen items-center justify-center">
-      <div className="rounded-lg bg-light-background p-8 shadow-lg dark:bg-dark-background">
+      <div className="rounded-md bg-light-background p-8 shadow-lg dark:bg-dark-background">
         <h2 className="mb-4 text-2xl font-bold text-light-text dark:text-dark-text">
           Verificación de Email
         </h2>

@@ -1,5 +1,5 @@
 // /src/components/ErrorBoundary.js
-import React from 'react';
+import React from "react";
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -14,11 +14,11 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="flex flex-col items-center justify-center min-h-screen">
+        <div className="flex min-h-screen flex-col items-center justify-center">
           <h1 className="text-2xl text-light-buttons">Algo salió mal</h1>
-          <button 
+          <button
             onClick={() => window.location.reload()}
-            className="mt-4 bg-light-buttons px-4 py-2"
+            className="mt-4 rounded-md bg-light-buttons px-4 py-2"
           >
             Recargar página
           </button>

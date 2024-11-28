@@ -1,6 +1,6 @@
 // /src/hooks/useAPI.js
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 export const useAPI = (endpoint, options = {}) => {
   const [data, setData] = useState(null);
@@ -12,7 +12,7 @@ export const useAPI = (endpoint, options = {}) => {
       try {
         const response = await axios.get(
           `${process.env.REACT_APP_API_URL}${endpoint}`,
-          { withCredentials: true, ...options }
+          { withCredentials: true, ...options },
         );
         setData(response.data);
       } catch (err) {

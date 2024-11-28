@@ -3,9 +3,7 @@ module.exports = {
   darkMode: "selector",
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    
     extend: {
-      
       boxShadow: {
         highlight:
           "0 4px 6px -1px rgba(255, 252, 242, 0.1), 0 2px 4px -1px rgba(255, 252, 242, 0.06)",

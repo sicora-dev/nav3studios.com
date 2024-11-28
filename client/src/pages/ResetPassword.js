@@ -9,17 +9,16 @@ const ResetPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
-  
 
   useEffect(() => {
-    const checkToken = async () => { 
+    const checkToken = async () => {
       if (!token) {
         navigate("/forgot-password");
         return;
-      } 
+      }
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/check-reset-token/${token}`
+          `${process.env.REACT_APP_BACKEND_URL}/check-reset-token/${token}`,
         );
 
         if (!response.data.valid) {
@@ -32,7 +31,6 @@ const ResetPassword = () => {
     };
     checkToken();
   }, [token, navigate]);
-
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -47,7 +45,7 @@ const ResetPassword = () => {
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/reset-password/${token}`,
-        { password }
+        { password },
       );
 
       setMessage("Contraseña restablecida correctamente.");
@@ -67,15 +65,18 @@ const ResetPassword = () => {
       </h2>
       <div
         key={1}
-        className="relative flex h-fit min-w-[90%] overflow-hidden border border-light-text bg-gradient-to-b from-light-background to-light-secondary px-8 py-8 shadow-2xl transition-all duration-500 ease-in-out dark:border-dark-secondary dark:from-dark-background dark:to-dark-secondary md:min-w-fit"
+        className="relative flex h-fit min-w-[90%] overflow-hidden rounded-md border border-light-text bg-gradient-to-b from-light-background to-light-secondary px-8 py-8 shadow-2xl transition-all duration-500 ease-in-out md:min-w-fit dark:border-dark-secondary dark:from-dark-background dark:to-dark-secondary"
       >
-        <form onSubmit={handleSubmit} className="flex w-full flex-col items-center">
+        <form
+          onSubmit={handleSubmit}
+          className="flex w-full flex-col items-center"
+        >
           <section className="relative mb-6">
             <input
               type="password"
               id="new-password"
               required
-              className="input-box block w-full border border-light-secondary bg-light-background p-2.5 text-sm text-light-text outline-none focus:border-light-highlight focus:ring-light-highlight dark:border-dark-secondary dark:bg-dark-background dark:text-dark-text dark:placeholder-dark-text dark:focus:border-dark-buttons dark:focus:ring-dark-buttons"
+              className="input-box block w-full rounded-md border border-light-secondary bg-light-background p-2.5 text-sm text-light-text outline-none focus:border-light-highlight focus:ring-light-highlight dark:border-dark-secondary dark:bg-dark-background dark:text-dark-text dark:placeholder-dark-text dark:focus:border-dark-buttons dark:focus:ring-dark-buttons"
               placeholder="Nueva contraseña"
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -85,8 +86,8 @@ const ResetPassword = () => {
               type="password"
               id="confirm-password"
               required
-              className="input-box block w-full border border-light-secondary bg-light-background p-2.5 text-sm text-light-text outline-none focus:border-light-highlight focus:ring-light-highlight dark:border-dark-secondary dark:bg-dark-background dark:text-dark-text dark:placeholder-dark-text dark:focus:border-dark-buttons dark:focus:ring-dark-buttons"
-              placeholder="Confirmar nueva contraseña"
+              className="input-box block w-full rounded-md border border-light-secondary bg-light-background p-2.5 text-sm text-light-text outline-none focus:border-light-highlight focus:ring-light-highlight dark:border-dark-secondary dark:bg-dark-background dark:text-dark-text dark:placeholder-dark-text dark:focus:border-dark-buttons dark:focus:ring-dark-buttons"
+              placeholder="Confirmar contraseña"
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </section>
@@ -95,7 +96,7 @@ const ResetPassword = () => {
           <div className="flex w-fit gap-2">
             <button
               type="submit"
-              className="bg-light-buttons px-2 py-1 dark:bg-dark-buttons"
+              className="rounded-md bg-light-buttons px-2 py-1 dark:bg-dark-buttons"
             >
               Restablecer contraseña
             </button>

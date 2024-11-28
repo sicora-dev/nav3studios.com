@@ -10,14 +10,14 @@ const NavBarAccount = memo(function NavBarAccount({
 
   return (
     <div class="relative flex w-auto items-center justify-center transition-all duration-[450ms] ease-in-out">
-      <article class="relative left-0 flex w-fit gap-2 border border-solid border-light-text bg-light-secondary shadow-lg shadow-black/15 duration-500 ease-in-out dark:bg-dark-secondary">
+      <article class="relative left-0 flex w-fit gap-2 rounded-md border border-solid border-light-text bg-light-secondary shadow-lg shadow-black/15 duration-500 ease-in-out dark:bg-dark-secondary">
         <div
-          className={`absolute h-12 w-1/2 border border-light-buttons transition-transform duration-300 ease-in-out ${
+          className={`absolute h-12 w-1/2 rounded-md border border-light-buttons transition-transform duration-300 ease-in-out ${
             activeSection === "settings" ? "translate-x-full" : "translate-x-0"
           }`}
         />
         <label
-          class={`min-w-50 group relative flex h-12 w-full flex-row items-center justify-center gap-3 border-solid border-light-background/10 px-10 text-light-text duration-300 ease-in-out dark:border-dark-background/30 dark:text-dark-text lg:px-20`}
+          class={`min-w-50 group relative flex h-12 w-full flex-row items-center justify-center gap-3 border-solid border-light-background/10 px-10 text-light-text duration-300 ease-in-out lg:px-20 dark:border-dark-background/30 dark:text-dark-text`}
           for="bookings"
         >
           <input
@@ -54,7 +54,7 @@ const NavBarAccount = memo(function NavBarAccount({
           </p>
         </label>
         <label
-          class={`min-w-50 group relative flex h-12 w-full flex-row items-center justify-center gap-3 border-solid border-light-background/10 px-10 text-light-text duration-300 ease-in-out dark:border-dark-background/30 dark:text-dark-text lg:px-20`}
+          class={`min-w-50 group relative flex h-12 w-full flex-row items-center justify-center gap-3 border-solid border-light-background/10 px-10 text-light-text duration-300 ease-in-out lg:px-20 dark:border-dark-background/30 dark:text-dark-text`}
           for="settings"
         >
           <input

@@ -3,7 +3,6 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/login.css";
 
-
 function SuccessPayment() {
   const location = useLocation();
   const [paymentDetails, setPaymentDetails] = useState({
@@ -14,7 +13,6 @@ function SuccessPayment() {
     paymentDate: "",
     products: [],
   });
-  
 
   return (
     <main className="flex h-full w-full flex-col items-center">

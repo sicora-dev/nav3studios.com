@@ -125,11 +125,11 @@ function Login() {
         onMouseMove={(e) => handleMouseMove(e, 1)}
         onMouseEnter={() => handleMouseEnter(1)}
         onMouseLeave={handleMouseLeave}
-        className="relative flex h-fit min-w-[90%] overflow-hidden border border-light-text bg-gradient-to-b from-light-background to-light-secondary px-8 py-8 shadow-2xl transition-all duration-500 ease-in-out dark:border-dark-secondary dark:from-dark-background dark:to-dark-secondary md:min-w-fit"
+        className="relative flex h-fit min-w-[90%] overflow-hidden rounded-md border border-light-text bg-gradient-to-b from-light-background to-light-secondary px-8 py-8 shadow-2xl transition-all duration-500 ease-in-out md:min-w-fit dark:border-dark-secondary dark:from-dark-background dark:to-dark-secondary"
       >
         <input
           aria-hidden="true"
-          className="pointer-events-none absolute left-0 top-0 z-10 h-full w-full cursor-default border-2 border-[#eb5e28]/50 transition-opacity duration-500 placeholder:select-none"
+          className="pointer-events-none absolute left-0 top-0 z-10 h-full w-full cursor-default rounded-md border-2 border-[#eb5e28]/50 transition-opacity duration-500 placeholder:select-none"
           style={{
             opacity: activeDiv === 1 ? opacity : 0,
             WebkitMaskImage: `radial-gradient(30% 30px at ${position.x}px ${position.y}px, black 45%, transparent)`,
@@ -172,7 +172,7 @@ function Login() {
               type="text"
               id="user-email"
               required
-              className="input-box block w-full border border-light-secondary bg-light-background p-2.5 ps-10 text-sm text-light-text outline-none focus:border-light-highlight focus:ring-light-highlight dark:border-dark-secondary dark:bg-dark-background dark:text-dark-text dark:placeholder-dark-text dark:focus:border-dark-buttons dark:focus:ring-dark-buttons"
+              className="input-box block w-full rounded-md border border-light-secondary bg-light-background p-2.5 ps-10 text-sm text-light-text outline-none focus:border-light-highlight focus:ring-light-highlight dark:border-dark-secondary dark:bg-dark-background dark:text-dark-text dark:placeholder-dark-text dark:focus:border-dark-buttons dark:focus:ring-dark-buttons"
               placeholder="Usuario o correo electrónico"
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -199,7 +199,7 @@ function Login() {
               type="password"
               id="pasword"
               required
-              className="input-box block w-full border border-light-secondary bg-light-background p-2.5 ps-10 text-sm text-light-text outline-none focus:border-light-highlight focus:ring-light-highlight dark:border-dark-secondary dark:bg-dark-background dark:text-dark-text dark:placeholder-dark-text dark:focus:border-dark-buttons dark:focus:ring-dark-buttons"
+              className="input-box block w-full rounded-md border border-light-secondary bg-light-background p-2.5 ps-10 text-sm text-light-text outline-none focus:border-light-highlight focus:ring-light-highlight dark:border-dark-secondary dark:bg-dark-background dark:text-dark-text dark:placeholder-dark-text dark:focus:border-dark-buttons dark:focus:ring-dark-buttons"
               placeholder="Contraseña"
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -211,18 +211,18 @@ function Login() {
           <div className="flex w-fit gap-2">
             <button
               type="submit"
-              className="bg-light-buttons px-2 py-1 dark:bg-dark-buttons"
+              className="rounded-md bg-light-buttons px-2 py-1 dark:bg-dark-buttons"
             >
               Iniciar Sesión
             </button>
             <NavLink to="/register">
-              <button className="bg-light-secondary px-2 py-1 dark:bg-dark-secondary">
+              <button className="rounded-md bg-light-secondary px-2 py-1 dark:bg-dark-secondary">
                 Registrarse
               </button>
             </NavLink>
           </div>
           <NavLink to="/forgot-password">
-            <button className="mt-2 px-2 py-1 text-sm transition ease-in-out hover:text-light-buttons/70">
+            <button className="mt-2 rounded-md px-2 py-1 text-sm transition ease-in-out hover:text-light-buttons/70">
               ¿Olvidaste tu contraseña?
             </button>
           </NavLink>

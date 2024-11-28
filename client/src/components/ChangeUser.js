@@ -172,14 +172,14 @@ function ChangeUser({ settingsOption, userId }) {
                 id="username"
                 required
                 autocomplete="off"
-                className="input-box block w-full border border-light-secondary bg-light-background p-2.5 ps-10 text-sm text-light-text outline-none focus:border-light-highlight focus:ring-light-highlight dark:border-dark-secondary dark:bg-dark-background dark:text-dark-text dark:placeholder-dark-text dark:focus:border-dark-buttons dark:focus:ring-dark-buttons"
+                className="input-box block w-full rounded-md border border-light-secondary bg-light-background p-2.5 ps-10 text-sm text-light-text outline-none focus:border-light-highlight focus:ring-light-highlight dark:border-dark-secondary dark:bg-dark-background dark:text-dark-text dark:placeholder-dark-text dark:focus:border-dark-buttons dark:focus:ring-dark-buttons"
                 placeholder="Nuevo usuario"
                 onChange={(e) => setNewUsername(e.target.value)}
               />
             </section>
             <button
               type="submit"
-              className="bg-light-buttons px-2 py-1 dark:bg-dark-buttons"
+              className="rounded-md bg-light-buttons px-2 py-1 dark:bg-dark-buttons"
             >
               Cambiar usuario
             </button>
@@ -211,14 +211,14 @@ function ChangeUser({ settingsOption, userId }) {
                 id="email"
                 required
                 autocomplete="off"
-                className="input-box block w-full border border-light-secondary bg-light-background p-2.5 ps-10 text-sm text-light-text outline-none focus:border-light-highlight focus:ring-light-highlight dark:border-dark-secondary dark:bg-dark-background dark:text-dark-text dark:placeholder-dark-text dark:focus:border-dark-buttons dark:focus:ring-dark-buttons"
+                className="input-box block w-full rounded-md border border-light-secondary bg-light-background p-2.5 ps-10 text-sm text-light-text outline-none focus:border-light-highlight focus:ring-light-highlight dark:border-dark-secondary dark:bg-dark-background dark:text-dark-text dark:placeholder-dark-text dark:focus:border-dark-buttons dark:focus:ring-dark-buttons"
                 placeholder="Nuevo email"
                 onChange={(e) => setNewEmail(e.target.value)}
               />
             </section>
             <button
               type="submit"
-              className="bg-light-buttons px-2 py-1 dark:bg-dark-buttons"
+              className="rounded-md bg-light-buttons px-2 py-1 dark:bg-dark-buttons"
             >
               Cambiar email
             </button>
@@ -250,7 +250,7 @@ function ChangeUser({ settingsOption, userId }) {
                 name="currentPassword"
                 required
                 autocomplete="off"
-                className="input-box block w-full border border-light-secondary bg-light-background p-2.5 ps-10 text-sm text-light-text outline-none focus:border-light-highlight focus:ring-light-highlight dark:border-dark-secondary dark:bg-dark-background dark:text-dark-text dark:placeholder-dark-text dark:focus:border-dark-buttons dark:focus:ring-dark-buttons"
+                className="input-box block w-full rounded-md border border-light-secondary bg-light-background p-2.5 ps-10 text-sm text-light-text outline-none focus:border-light-highlight focus:ring-light-highlight dark:border-dark-secondary dark:bg-dark-background dark:text-dark-text dark:placeholder-dark-text dark:focus:border-dark-buttons dark:focus:ring-dark-buttons"
                 placeholder="Contraseña Actual"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -280,7 +280,7 @@ function ChangeUser({ settingsOption, userId }) {
                 name="newPassword"
                 required
                 autocomplete="off"
-                className="input-box block w-full border border-light-secondary bg-light-background p-2.5 ps-10 text-sm text-light-text outline-none focus:border-light-highlight focus:ring-light-highlight dark:border-dark-secondary dark:bg-dark-background dark:text-dark-text dark:placeholder-dark-text dark:focus:border-dark-buttons dark:focus:ring-dark-buttons"
+                className="input-box block w-full rounded-md border border-light-secondary bg-light-background p-2.5 ps-10 text-sm text-light-text outline-none focus:border-light-highlight focus:ring-light-highlight dark:border-dark-secondary dark:bg-dark-background dark:text-dark-text dark:placeholder-dark-text dark:focus:border-dark-buttons dark:focus:ring-dark-buttons"
                 placeholder="Nueva Contraseña"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
@@ -311,7 +311,7 @@ function ChangeUser({ settingsOption, userId }) {
                 required
                 autocomplete="off"
                 onpaste="return false;"
-                className="scroll-placeholder input-box block w-full border border-light-secondary bg-light-background p-2.5 ps-10 text-sm text-light-text outline-none focus:border-light-highlight focus:ring-light-highlight dark:border-dark-secondary dark:bg-dark-background dark:text-dark-text dark:placeholder-dark-text dark:focus:border-dark-buttons dark:focus:ring-dark-buttons"
+                className="scroll-placeholder input-box block w-full rounded-md border border-light-secondary bg-light-background p-2.5 ps-10 text-sm text-light-text outline-none focus:border-light-highlight focus:ring-light-highlight dark:border-dark-secondary dark:bg-dark-background dark:text-dark-text dark:placeholder-dark-text dark:focus:border-dark-buttons dark:focus:ring-dark-buttons"
                 placeholder="Confirmar Contraseña"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
@@ -320,7 +320,7 @@ function ChangeUser({ settingsOption, userId }) {
 
             <button
               type="submit"
-              className="bg-light-buttons px-2 py-1 dark:bg-dark-buttons"
+              className="rounded-md bg-light-buttons px-2 py-1 dark:bg-dark-buttons"
             >
               Cambiar Contraseña
             </button>
