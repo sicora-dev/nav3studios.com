@@ -1,7 +1,1 @@
-verificacion de email en reservas (en reservas podria hacer una doble confirmacion para el status de pending, deben aceptar tanto el cliente como el productor para que el estado cambia a accepted, si uno de los 2 deniega, estado canceled(reason: cancelado por cliente/productor)) si se cancela la reserva, status cancelada y se debe poder reservar en esa misma hora de la reserva cancelada, es decir en el modelo donde busco las fechas libres, tengo tambien que comprobar si esta la reserva eliminada, para que si lo esta, añadir igualmente la hora a fechas libres
 
-enviar correo al cliente al crear reserva
-
-success payment bien
-
-barra de steps en reserva
