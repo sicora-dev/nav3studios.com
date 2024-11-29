@@ -26,38 +26,8 @@ tomorrow.setDate(tomorrow.getDate() + 1);
 
 function Reserva() {
   const [user, setUser] = useState([]);
-  const [services, setServices] = useState([
-    // {
-    //   id: "1",
-    //   name: "Grabación",
-    //   price: "30.00",
-    // },
-    // {
-    //   id: "2",
-    //   name: "Mezcla y master",
-    //   price: "45.00",
-    // },
-    // {
-    //   id: "3",
-    //   name: "Beat",
-    //   price: "35.00",
-    // },
-    // {
-    //   id: "4",
-    //   name: "Sesión completa",
-    //   price: "85.00",
-    // },
-  ]);
-  const [producers, setProducers] = useState([
-    // {
-    //   id: 1,
-    //   username: "Najerax",
-    // },
-    // {
-    //   id: 2,
-    //   username: "Roux",
-    // },
-  ]);
+  const [services, setServices] = useState([]);
+  const [producers, setProducers] = useState([]);
   const [freeHours, setFreeHours] = useState([]);
 
   const [selectedProducer, setSelectedProducer] = useState();
