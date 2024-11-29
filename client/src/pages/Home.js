@@ -1,7 +1,8 @@
-import React from "react";
-import Services from "../components/Services";
+import React, { lazy } from "react";
 import { NavLink } from "react-router-dom";
 import "../styles/home.css";
+
+const Services = lazy(() => import("../components/Services"));
 
 function Home() {
   return (

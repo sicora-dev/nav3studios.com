@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
 import axios from "axios";
 import "../styles/login.css";
 import LoadingSpinner from "../components/LoadingSpinner";
@@ -8,16 +8,12 @@ function ForgotPassword() {
   const [activeDiv, setActiveDiv] = useState(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [opacity, setOpacity] = useState(0);
-  const [mode, setMode] = useState(null);
+  const [mode] = useState(null);
 
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-
-  const location = useLocation();
-
-  const navigate = useNavigate();
 
   const handleMouseMove = (e, id) => {
     if (activeDiv !== id) return;
@@ -49,10 +45,9 @@ function ForgotPassword() {
     setLoading(true);
 
     try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/forgot-password`,
-        { email },
-      );
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/forgot-password`, {
+        email,
+      });
 
       setMessage("Correo de restablecimiento de contraseña enviado.");
       setLoading(false);

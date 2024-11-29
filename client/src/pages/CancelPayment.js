@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
+import React from "react";
 import "../styles/login.css";
 
 function CancelPayment() {

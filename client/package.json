@@ -3,7 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.13.5",
+    "@emotion/styled": "^11.13.5",
     "@googlemaps/react-wrapper": "^1.1.42",
+    "@mui/icons-material": "^6.1.9",
+    "@mui/joy": "^5.0.0-beta.48",
     "@paypal/react-paypal-js": "^8.7.0",
     "@react-google-maps/api": "^2.20.3",
     "@testing-library/jest-dom": "^5.17.0",

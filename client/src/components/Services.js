@@ -1,10 +1,13 @@
 import React, { useState, useEffect, memo } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Services = memo(function Services() {
   const [activeDiv, setActiveDiv] = useState(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [opacity, setOpacity] = useState(0);
   const [mode, setMode] = useState(null);
+
+  const navigate = useNavigate();
 
   const handleMouseMove = (e, id) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -24,7 +27,7 @@ const Services = memo(function Services() {
   useEffect(() => {
     const isDarkMode = localStorage.getItem("isDarkMode") === "true";
     setMode(isDarkMode ? "dark" : "light");
-  });
+  }, []);
 
   return (
     <main className="flex flex-col items-center justify-center pl-5 pr-5">
@@ -121,7 +124,10 @@ const Services = memo(function Services() {
           </div>
         ))}
         <div className="flex w-full justify-center lg:col-span-2">
-          <button className="group rounded-md px-2 py-1 text-xl">
+          <button
+            className="group rounded-md px-2 py-1 text-xl"
+            onClick={() => navigate("/reserva")}
+          >
             <span className="relative flex items-center gap-2">
               Reserva YA
               <svg

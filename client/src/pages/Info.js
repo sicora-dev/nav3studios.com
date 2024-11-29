@@ -1,8 +1,8 @@
-import Map from "../components/Map";
 import LazyLoadLocal from "../components/LazyLoadLocal";
 import "../styles/info.css";
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, Suspense, lazy } from "react";
 import LoadingSpinner from "../components/LoadingSpinner";
+const Map = lazy(() => import("../components/Map"));
 
 function Info() {
   const [activeDiv, setActiveDiv] = useState(null);
@@ -36,7 +36,7 @@ function Info() {
   useEffect(() => {
     const isDarkMode = localStorage.getItem("isDarkMode") === "true";
     setMode(isDarkMode ? "dark" : "light");
-  });
+  }, []);
 
   return (
     <Suspense fallback={<LoadingSpinner />}>

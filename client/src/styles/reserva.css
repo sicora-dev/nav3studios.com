@@ -1,0 +1,15 @@
+:root {
+  --background: #fffcf2;
+  --secondary: #ccc5b9;
+  --text: #252422;
+  --buttons: #eb5e28;
+  --highlight: #403d39;
+}
+
+:root[class="dark"] {
+  --background: #252422;
+  --secondary: #403d39;
+  --text: #ccc5b9;
+  --buttons: #eb5e28;
+  --highlight: #fffcf2;
+}

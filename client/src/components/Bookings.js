@@ -12,7 +12,9 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
   const [cancellation_reason, setCancellationReason] = useState("");
   const [cancellationError, setCancellationError] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [bookingsPerPage, setBookingsPerPage] = useState(9);
+  const [bookingsPerPage] = useState(9);
+  const [producersMap, setProducersMap] = useState({});
+  const [servicesMap, setServicesMap] = useState({});
 
   useEffect(() => {
     if (!bookings) {
@@ -38,6 +40,35 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
   }, [bookings]);
 
   useEffect(() => {
+    const fetchMappings = async () => {
+      try {
+        const [producersRes, servicesRes] = await Promise.all([
+          axios.get(`${process.env.REACT_APP_BACKEND_URL}/producers`),
+          axios.get(`${process.env.REACT_APP_BACKEND_URL}/services`),
+        ]);
+
+        // Crear mapas para búsqueda O(1)
+        const producersById = producersRes.data.reduce((acc, producer) => {
+          acc[producer.id] = producer.username;
+          return acc;
+        }, {});
+
+        const servicesById = servicesRes.data.reduce((acc, service) => {
+          acc[service.id] = service.name;
+          return acc;
+        }, {});
+
+        setProducersMap(producersById);
+        setServicesMap(servicesById);
+      } catch (error) {
+        console.error("Error fetching mappings:", error);
+      }
+    };
+
+    fetchMappings();
+  }, []);
+
+  useEffect(() => {
     setCurrentPage(1);
   }, [bookingOption]);
 
@@ -51,7 +82,7 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
 
   const handleAccept = async () => {
     try {
-      const response = await axios.put(
+      await axios.put(
         `${process.env.REACT_APP_BACKEND_URL}/bookings/update/${activeBooking}`,
         {
           status: "accepted",
@@ -85,7 +116,7 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
   const handleCancel = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put(
+      await axios.put(
         `${process.env.REACT_APP_BACKEND_URL}/bookings/update/${activeBooking}`,
         {
           status: "canceled",
@@ -199,8 +230,14 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
                       timeZone: "UTC",
                     })}
                   </p>
-                  <p>Servicio: {booking.service_id}</p>
-                  <p>Productor: {booking.producer_id}</p>
+                  <p>
+                    Servicio:{" "}
+                    {servicesMap[booking.service_id] || booking.service_id}
+                  </p>
+                  <p>
+                    Productor:{" "}
+                    {producersMap[booking.producer_id] || booking.producer_id}
+                  </p>
                   <p>Estado: {booking.status}</p>
                   {producer && (
                     <div className="my-2 flex gap-2">
@@ -386,11 +423,17 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
                       hour: "2-digit",
                       minute: "2-digit",
                       hour12: false,
-                      timeZone: "UTC"
+                      timeZone: "UTC",
                     })}
                   </p>
-                  <p>Servicio: {booking.service_id}</p>
-                  <p>Productor: {booking.producer_id}</p>
+                  <p>
+                    Servicio:{" "}
+                    {servicesMap[booking.service_id] || booking.service_id}
+                  </p>
+                  <p>
+                    Productor:{" "}
+                    {producersMap[booking.producer_id] || booking.producer_id}
+                  </p>
                   <p>Estado: {booking.status}</p>
                   {producer && (
                     <div className="my-2 flex gap-2">
@@ -584,8 +627,14 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
                       timeZone: "UTC",
                     })}
                   </p>
-                  <p>Servicio: {booking.service_id}</p>
-                  <p>Productor: {booking.producer_id}</p>
+                  <p>
+                    Servicio:{" "}
+                    {servicesMap[booking.service_id] || booking.service_id}
+                  </p>
+                  <p>
+                    Productor:{" "}
+                    {producersMap[booking.producer_id] || booking.producer_id}
+                  </p>
                   <p>Estado: {booking.status}</p>
                 </div>
               </label>
@@ -683,8 +732,14 @@ const Bookings = memo(function Bookings({ bookingOption, bookings, producer }) {
                       timeZone: "UTC",
                     })}
                   </p>
-                  <p>Servicio: {booking.service_id}</p>
-                  <p>Productor: {booking.producer_id}</p>
+                  <p>
+                    Servicio:{" "}
+                    {servicesMap[booking.service_id] || booking.service_id}
+                  </p>
+                  <p>
+                    Productor:{" "}
+                    {producersMap[booking.producer_id] || booking.producer_id}
+                  </p>
                   <p>Estado: {booking.status}</p>
                 </div>
               </label>

@@ -2,12 +2,21 @@ import React, { useEffect, useState, useCallback, useMemo } from "react";
 import debounce from "lodash/debounce";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { DayPicker, getDefaultClassNames } from "react-day-picker";
+import { DayPicker } from "react-day-picker";
 import { es } from "date-fns/locale";
 import "react-day-picker/style.css";
 import { PayPalButtons } from "@paypal/react-paypal-js";
-import { set } from "date-fns";
+
 import LoadingSpinner from "../components/LoadingSpinner";
+import Stepper from "@mui/joy/Stepper";
+import Step, { stepClasses } from "@mui/joy/Step";
+import StepIndicator, { stepIndicatorClasses } from "@mui/joy/StepIndicator";
+
+import HeadphonesRoundedIcon from "@mui/icons-material/HeadphonesRounded";
+import MusicNoteRoundedIcon from "@mui/icons-material/MusicNoteRounded";
+import EventRoundedIcon from "@mui/icons-material/EventRounded";
+import ReceiptLongRoundedIcon from "@mui/icons-material/ReceiptLongRounded";
+import "../styles/reserva.css";
 
 const yesterday = new Date();
 yesterday.setDate(yesterday.getDate() - 1);
@@ -62,20 +71,18 @@ function Reserva() {
   const [bookingDate, setBookingDate] = useState();
   const [paymentMethod, setPaymentMethod] = useState();
 
-  const [isPayPalReady, setIsPayPalReady] = useState(false);
   const [paymentError, setPaymentError] = useState("");
 
   const [next, setNext] = useState(0);
-  const [bookingCreated, setBookingCreated] = useState(null);
+
   const [activeDiv, setActiveDiv] = useState(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [opacity, setOpacity] = useState(0);
-  const [mode, setMode] = useState(null);
+  const [mode] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [loadingDetails, setLoadingDetails] = useState(false);
   const [loadingHours, setLoadingHours] = useState(true);
   const [error, setError] = useState("");
-  const defaultClassNames = getDefaultClassNames();
   const allHours = [9, 11, 13, 15, 17, 19];
 
   const [dateCache, setDateCache] = useState({});
@@ -292,9 +299,8 @@ function Reserva() {
     if (paymentMethod === 1) {
       try {
         setError(null);
-        setBookingCreated(false);
 
-        const response = await axios.post(
+        await axios.post(
           `${process.env.REACT_APP_BACKEND_URL}/createBooking`,
           {
             userId: user,
@@ -309,8 +315,6 @@ function Reserva() {
             withCredentials: true,
           },
         );
-
-        setBookingCreated(true);
 
         setIsSubmitting(false);
         navigate("/account");
@@ -415,6 +419,120 @@ function Reserva() {
       <h2 className="p-10 text-center font-title text-3xl font-bold text-light-buttons dark:text-light-buttons">
         HAZ TU RESERVA
       </h2>
+      <section className="mb-[1em] flex w-full max-w-[70%]">
+        <Stepper
+          size="lg"
+          sx={{
+            width: "100%",
+            "--StepIndicator-size": "3rem",
+            "--Step-connectorInset": "0px",
+            [`& .${stepIndicatorClasses.root}`]: {
+              borderWidth: 2,
+              borderColor: "var(--secondary)",
+            },
+            [`& .${stepClasses.root}::after`]: {
+              height: 2,
+              backgroundColor: "var(--secondary)",
+            },
+            [`& .${stepClasses.completed}`]: {
+              [`& .${stepIndicatorClasses.root}`]: {
+                borderColor: "var(--buttons)",
+                color: "var(--buttons)",
+              },
+              "&::after": {
+                bgcolor: "var(--buttons)",
+              },
+            },
+            [`& .${stepClasses.active}`]: {
+              [`& .${stepIndicatorClasses.root}`]: {
+                borderColor: "var(--buttons)",
+                color: "var(--text)",
+              },
+            },
+            [`& .${stepClasses.disabled} *`]: {
+              color: "var(--highlight)",
+            },
+          }}
+        >
+          <Step
+            completed={next > 0}
+            active={next === 0}
+            orientation="vertical"
+            indicator={
+              <StepIndicator
+                variant={next === 0 ? "solid" : "outlined"}
+                sx={{
+                  color: next === 0 ? "var(--text)" : "var(--buttons)",
+                  borderColor:
+                    next === 0 ? "var(--buttons)" : "var(--secondary)",
+                  backgroundColor:
+                    next === 0 ? "var(--secondary)" : "transparent",
+                }}
+              >
+                <HeadphonesRoundedIcon />
+              </StepIndicator>
+            }
+          />
+          <Step
+            completed={next > 1}
+            active={next === 1}
+            orientation="vertical"
+            indicator={
+              <StepIndicator
+                variant={next === 1 ? "solid" : "outlined"}
+                sx={{
+                  color: next === 1 ? "var(--text)" : "var(--buttons)",
+                  borderColor:
+                    next === 1 ? "var(--buttons)" : "var(--secondary)",
+                  backgroundColor:
+                    next === 1 ? "var(--secondary)" : "transparent",
+                }}
+              >
+                <MusicNoteRoundedIcon />
+              </StepIndicator>
+            }
+          />
+          <Step
+            completed={next > 2}
+            active={next === 2}
+            orientation="vertical"
+            indicator={
+              <StepIndicator
+                variant={next === 2 ? "solid" : "outlined"}
+                sx={{
+                  color: next === 2 ? "var(--text)" : "var(--buttons)",
+                  borderColor:
+                    next === 2 ? "var(--buttons)" : "var(--secondary)",
+                  backgroundColor:
+                    next === 2 ? "var(--secondary)" : "transparent",
+                }}
+              >
+                <EventRoundedIcon />
+              </StepIndicator>
+            }
+          />
+          <Step
+            completed={next > 3}
+            active={next === 3}
+            orientation="vertical"
+            indicator={
+              <StepIndicator
+                variant={next === 3 ? "solid" : "outlined"}
+                sx={{
+                  color: next === 3 ? "var(--text)" : "var(--buttons)",
+                  borderColor:
+                    next === 3 ? "var(--buttons)" : "var(--secondary)",
+                  backgroundColor:
+                    next === 3 ? "var(--secondary)" : "transparent",
+                }}
+              >
+                <ReceiptLongRoundedIcon />
+              </StepIndicator>
+            }
+          />
+        </Stepper>
+      </section>
+
       <div
         key={1}
         onMouseMove={(e) => handleMouseMove(e, 1)}
@@ -608,7 +726,8 @@ function Reserva() {
                       body: "grid grid-cols-7 gap-2",
                       day: "font-bold",
                       today: "text-gray-400",
-                      selected: "bg-light-buttons dark:bg-dark-buttons rounded-md",
+                      selected:
+                        "bg-light-buttons dark:bg-dark-buttons rounded-md",
                       disabled: "text-gray-400",
                       outside: "text-gray-400",
                       footer: "font-title text-xl font-bold",

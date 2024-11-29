@@ -8,7 +8,7 @@ function Login() {
   const [activeDiv, setActiveDiv] = useState(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [opacity, setOpacity] = useState(0);
-  const [mode, setMode] = useState(null);
+  const [mode] = useState(null);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

@@ -21,8 +21,6 @@ import ResetPassword from "./pages/ResetPassword";
 import "./styles/index.css";
 
 const Reserva = lazy(() => import("./pages/Reserva"));
-const Services = lazy(() => import("./components/Services"));
-const Map = lazy(() => import("./components/Map"));
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(() => {
